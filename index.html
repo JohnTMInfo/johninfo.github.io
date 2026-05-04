@@ -17,77 +17,13 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         @keyframes backgroundCycle {
-            0%, 100% { background-color: #050505; }
-            33% { background-color: #350d61; }
-            66% { background-color: #0d3561; }
-        }
-
-        @keyframes accentCycle {
-            0%, 100% { --accent: #22d3ee; }
-            33% { --accent: #9d1dfd; }
-            66% { --accent: #3b82f6; }
-        }
-
-        @keyframes notificationSlide {
-            0% { transform: translate(-50%, -120px); opacity: 0; }
-            15% { transform: translate(-50%, 20px); opacity: 1; }
-            85% { transform: translate(-50%, 20px); opacity: 1; }
-            100% { transform: translate(-50%, -120px); opacity: 0; }
-        }
-
-        @keyframes screenShake {
-            0% { transform: translate(3px, 2px); }
-            25% { transform: translate(-3px, -2px); }
-            50% { transform: translate(-2px, 3px); }
-            100% { transform: translate(0, 0); }
+            0%, 100% { background-color: #050505; --accent: #22d3ee; }
+            33% { background-color: #240b36; --accent: #9d1dfd; }
+            66% { background-color: #0b2436; --accent: #3b82f6; }
         }
 
         @keyframes typing { from { width: 0 } to { width: 100% } }
         @keyframes blink { from, to { border-color: transparent } 50% { border-color: var(--accent) } }
-
-        .master-glitch {
-            animation: screenShake 0.1s infinite !important;
-            filter: invert(1) hue-rotate(180deg) contrast(3) !important;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            color: var(--text-primary);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 80px 20px;
-            min-height: 100vh;
-            overflow-x: hidden;
-            animation: backgroundCycle 15s infinite alternate ease-in-out, 
-                       accentCycle 15s infinite alternate ease-in-out;
-        }
-
-        body::after {
-            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.05));
-            z-index: 100; background-size: 100% 4px, 3px 100%; pointer-events: none;
-        }
-
-        .notification {
-            position: fixed; top: 0; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 350px; background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 18px; padding: 12px 16px; display: flex; align-items: center;
-            gap: 12px; z-index: 1000; opacity: 0; text-decoration: none; color: white;
-        }
-
-        #music-notif { animation: notificationSlide 6s ease-in-out 1s forwards; }
-        #discord-notif { animation: notificationSlide 6s ease-in-out 8s forwards; }
-
-        .notif-icon { width: 35px; height: 35px; border-radius: 8px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 18px; }
-        .notif-text { font-size: 13px; font-weight: 600; }
-        .notif-text span { display: block; color: var(--text-secondary); font-size: 11px; font-weight: 400; }
-
-        .icon-stream { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
-        .float-icon { position: absolute; width: 35px; height: 35px; opacity: 0; animation: floatPop 12s ease-out infinite; }
-        .float-icon img { width: 100%; height: 100%; object-fit: contain; }
 
         @keyframes floatPop {
             0% { transform: translateY(110vh) scale(0.5) rotate(0deg); opacity: 0; }
@@ -95,39 +31,91 @@
             100% { transform: translateY(-20vh) scale(1.4) rotate(360deg); opacity: 0; }
         }
 
-        .icon-1 { left: 10%; animation-delay: 0s; } .icon-2 { left: 30%; animation-delay: 3s; }
-        .icon-3 { left: 55%; animation-delay: 6s; } .icon-4 { left: 80%; animation-delay: 9s; }
+        @keyframes auraPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
-        .container { width: 100%; max-width: 400px; position: relative; z-index: 10; animation: fadeUp 1s ease-out forwards; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes shake { 0% { transform: translate(1px, 1px); } 50% { transform: translate(-1px, -1px); } }
+
+        .master-glitch { filter: invert(1) hue-rotate(180deg) contrast(3); animation: shake 0.1s infinite; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 100px 20px;
+            min-height: 100vh;
+            overflow-x: hidden;
+            animation: backgroundCycle 15s infinite ease-in-out;
+            cursor: crosshair;
+        }
+
+        .scanlines::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.05));
+            z-index: 100;
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+        }
+
+        .trail {
+            position: fixed; width: 8px; height: 8px; background: var(--accent);
+            border-radius: 50%; pointer-events: none; z-index: 999;
+            box-shadow: 0 0 10px var(--accent); transition: transform 0.1s linear, opacity 0.5s;
+        }
+
+        #discord-widget {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 320px;
+            background: rgba(139, 0, 0, 0.4);
+            backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 35px; padding: 12px 20px;
+            display: flex; align-items: center; gap: 15px;
+            z-index: 1000; text-decoration: none; color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .discord-avatar-wrap { position: relative; }
+        .discord-img { width: 55px; height: 55px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); }
+        .discord-status { 
+            position: absolute; bottom: 0; right: 0; width: 18px; height: 18px; 
+            background: #23a55a; border-radius: 50%; border: 3px solid #8b0000; 
+        }
+
+        .discord-info { flex-grow: 1; }
+        .discord-name { font-size: 22px; font-weight: 800; letter-spacing: -1px; }
+        .discord-msg { font-size: 15px; color: rgba(255,255,255,0.6); }
+
+        .location-tag {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 15px; color: var(--text-secondary);
+            margin-bottom: 20px; opacity: 0.8;
+        }
+
+        .container { width: 100%; max-width: 400px; position: relative; z-index: 10; text-align: center; }
 
         .avatar {
-            width: 90px; height: 90px; border-radius: var(--card-radius); object-fit: cover;
-            margin-bottom: 16px; border: 2px solid var(--accent); box-shadow: 0 0 20px var(--accent);
-            transition: 0.5s ease;
+            width: 100px; height: 100px; border-radius: var(--card-radius);
+            border: 2px solid var(--accent); box-shadow: 0 0 20px var(--accent);
+            cursor: pointer; transition: 0.3s;
         }
 
-        h1 { font-size: 38px; font-weight: 900; letter-spacing: -1.5px; margin-bottom: 4px; }
+        .bio { color: var(--text-secondary); margin-bottom: 25px; font-size: 16px; }
 
-        .bio { 
-            color: var(--text-secondary); margin-bottom: 24px; font-size: 16px; width: fit-content;
-            overflow: hidden; border-right: 2px solid var(--accent); white-space: nowrap;
-            letter-spacing: 0.5px; animation: typing 3s steps(30, end), blink .75s step-end infinite;
-        }
-
-        .social-chips { display: flex; gap: 12px; margin-bottom: 40px; }
+        .social-chips { display: flex; gap: 12px; justify-content: center; margin-bottom: 40px; }
         .chip {
             display: flex; align-items: center; gap: 8px; padding: 10px 18px;
             background: var(--card-base); border: 1px solid var(--border-subtle);
-            border-radius: 100px; color: var(--text-primary); text-decoration: none;
-            font-size: 14px; font-weight: 600; transition: 0.3s; backdrop-filter: blur(10px);
+            border-radius: 100px; color: white; text-decoration: none; font-weight: 600;
         }
-        .chip:hover { border-color: var(--accent); transform: translateY(-2px); }
-
-        .section-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.2em; color: var(--text-secondary); margin-bottom: 16px; display: block; opacity: 0.6; }
+        .chip svg { width: 18px; height: 18px; fill: currentColor; }
 
         .gallery {
-            display: flex; gap: 12px; overflow-x: auto; margin-bottom: 40px;
+            display: flex; gap: 12px; overflow-x: auto; margin: 30px 0;
             padding-bottom: 10px; scroll-snap-type: x mandatory; scrollbar-width: none;
         }
         .gallery::-webkit-scrollbar { display: none; }
@@ -137,21 +125,53 @@
             scroll-snap-align: center;
         }
 
-        .music-card { background: #000; border-radius: 20px; overflow: hidden; border: 1px solid var(--border-subtle); margin-bottom: 40px; }
+        .aura-wrap { margin-top: 40px; text-align: left; }
+        .aura-bar { 
+            width: 100%; height: 6px; background: rgba(255,255,255,0.1); 
+            border-radius: 10px; overflow: hidden; margin-top: 8px;
+        }
+        .aura-fill { 
+            width: 88%; height: 100%; background: var(--accent); 
+            box-shadow: 0 0 15px var(--accent); animation: auraPulse 3s infinite;
+        }
 
-        #sam-text { margin-top: 50px; font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 4px; cursor: pointer; user-select: none; }
+        #sam-text {
+            margin-top: 60px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .crt-toggle {
+            position: fixed; bottom: 20px; left: 20px; padding: 10px;
+            background: var(--card-base); border: 1px solid var(--accent);
+            border-radius: 10px; color: var(--accent); font-size: 10px; z-index: 1001;
+        }
+
+        .icon-stream { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
+        .float-icon { position: absolute; width: 35px; height: 35px; opacity: 0; animation: floatPop 12s ease-out infinite; }
+        .float-icon img { width: 100%; height: 100%; object-fit: contain; }
+        .icon-1 { left: 10%; animation-delay: 0s; }
+        .icon-2 { left: 30%; animation-delay: 3s; }
+        .icon-3 { left: 55%; animation-delay: 6s; }
+        .icon-4 { left: 80%; animation-delay: 9s; }
     </style>
 </head>
-<body id="main-body">
+<body id="main-body" class="scanlines">
 
-    <div class="notification" id="music-notif">
-        <div class="notif-icon">🎵</div>
-        <div class="notif-text">Now Playing<span id="notif-track">...</span></div>
-    </div>
-
-    <a href="https://discord.gg/bdfZ49ASS" target="_blank" class="notification" id="discord-notif">
-        <div class="notif-icon">💬</div>
-        <div class="notif-text">join this server !!<span>discord.gg/bdfZ49ASS</span></div>
+    <a href="https://discord.gg/bdfZ49ASS" target="_blank" id="discord-widget">
+        <div class="discord-avatar-wrap">
+            <img src="1777905444446.jpeg" class="discord-img">
+            <div class="discord-status"></div>
+        </div>
+        <div class="discord-info">
+            <div class="discord-name">xoztar.</div>
+            <div class="discord-msg">hi</div>
+        </div>
+        <div style="opacity: 0.5;">➡️</div>
     </a>
 
     <div class="icon-stream">
@@ -162,21 +182,25 @@
     </div>
 
     <div class="container">
-        <div class="profile-header">
-            <img src="Untitled design.png" class="avatar">
-            <h1>John™</h1>
-            <div class="bio">just a guy on the internet vibing.</div>
-            
-            <div class="social-chips">
-                <a href="https://www.tiktok.com/@neoztar" target="_blank" class="chip">TikTok</a>
-                <a href="https://www.roblox.com/users/8593516066/profile" target="_blank" class="chip">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M5.026 1L2 8.441l6.974 2.14L12 3.14 5.026 1zm13.948 6.441L12 5.301l-2.14 6.974 6.974 2.14 2.14-6.974zM2 15.559L5.026 23l6.974-2.14L9.86 13.886 2 15.559zm16.974 5.301L22 13.419l-6.974-2.14-2.14 6.974 6.974 2.14z"/></svg>
-                    Roblox
-                </a>
-            </div>
+        <img src="Untitled design.png" class="avatar" id="main-avatar" onclick="checkSecret()">
+        <h1 style="font-size: 42px; margin-top: 10px;">John™</h1>
+        
+        <div class="location-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            London Uk 🇬🇧
         </div>
 
-        <span class="section-label">PHOTOS ➡️</span>
+        <p class="bio">just a guy on the internet vibing.</p>
+
+        <div class="social-chips">
+            <a href="https://www.tiktok.com/@neoztar" target="_blank" class="chip">TikTok</a>
+            <a href="https://www.roblox.com/users/8593516066/profile" target="_blank" class="chip">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M18.574 15.652l-4.14 1.49-1.49-4.14 4.14-1.49 1.49 4.14zM8.31 10.478l4.14-1.49 1.49 4.14-4.14 1.49-1.49-4.14zM4.444 2.106L2.106 8.574l6.468 2.338 2.338-6.468-6.468-2.338zm13.112 13.32l2.338-6.468-6.468-2.338-2.338 6.468 6.468 2.338zM2.106 15.426l2.338 6.468 6.468-2.338-2.338-6.468-6.468 2.338zm13.32-13.112l-6.468 2.338 2.338 6.468 6.468-2.338-2.338-6.468z"/></svg>
+                Roblox
+            </a>
+        </div>
+
+        <span style="font-size: 11px; letter-spacing: 2px; opacity: 0.5; font-weight: 800;">MY PHOTOS ➡️</span>
         <div class="gallery">
             <img src="LRM_20260424_121848.jpg">
             <img src="LRM_20260424_121524.jpg">
@@ -184,27 +208,51 @@
             <img src="1777904019291.jpeg">
         </div>
 
-        <span class="section-label">NOW PLAYING</span>
-        <div class="music-card" id="spotify-container"></div>
+        <div id="spotify-container" style="background:#000; border-radius:20px; overflow:hidden;"></div>
 
-        <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fjohn-tm-profile.github.io&count_bg=%2322D3EE&title_bg=%2318181B&icon=&icon_color=%23E7E7E7&title=views&edge_flat=false" alt="Hits">
+        <div class="aura-wrap">
+            <span style="font-size: 10px; opacity: 0.6; font-weight: 800;">CURRENT AURA LEVEL</span>
+            <div class="aura-bar"><div class="aura-fill"></div></div>
+        </div>
 
-        <div id="sam-text" onclick="triggerSamGlitch()">sam is lowkey cool asf</div>
+        <div id="sam-text" onclick="triggerGlitch()">sam is lowkey cool asf</div>
     </div>
 
-    <script>
-        const songs = [
-            { id: "4oE8VfB9PjQYxU7G0N1jQo", title: "Krank - Yeat" },
-            { id: "0b0sjLiEsnYORnOFB7ewUj", title: "you once said my name - 2hollis" }
-        ];
-        const randomSong = songs[Math.floor(Math.random() * songs.length)];
-        document.getElementById('spotify-container').innerHTML = `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/${randomSong.id}?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
-        document.getElementById('notif-track').innerText = randomSong.title;
+    <button class="crt-toggle" onclick="toggleCRT()">CRT: ON</button>
 
-        function triggerSamGlitch() {
-            const body = document.getElementById('main-body');
-            body.classList.add('master-glitch');
-            setTimeout(() => { body.classList.remove('master-glitch'); }, 1000);
+    <script>
+        document.addEventListener('mousemove', (e) => {
+            const trail = document.createElement('div');
+            trail.className = 'trail';
+            trail.style.left = e.pageX + 'px';
+            trail.style.top = e.pageY + 'px';
+            document.body.appendChild(trail);
+            setTimeout(() => { trail.style.opacity = '0'; trail.style.transform = 'scale(0)'; }, 100);
+            setTimeout(() => { trail.remove(); }, 600);
+        });
+
+        function toggleCRT() {
+            document.body.classList.toggle('scanlines');
+            document.querySelector('.crt-toggle').innerText = document.body.classList.contains('scanlines') ? "CRT: ON" : "CRT: OFF";
+        }
+
+        let taps = 0;
+        function checkSecret() {
+            taps++;
+            if(taps === 5) {
+                document.body.innerHTML = "<h1 style='color:lime; font-family:monospace; padding:50px;'>SYSTEM REBOOT...</h1>";
+                setTimeout(() => { location.reload(); }, 2000);
+            }
+            setTimeout(() => { taps = 0; }, 2000);
+        }
+
+        const songs = ["4oE8VfB9PjQYxU7G0N1jQo", "0b0sjLiEsnYORnOFB7ewUj"];
+        const pick = songs[Math.floor(Math.random() * songs.length)];
+        document.getElementById('spotify-container').innerHTML = `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/${pick}?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+
+        function triggerGlitch() {
+            document.body.classList.add('master-glitch');
+            setTimeout(() => document.body.classList.remove('master-glitch'), 1000);
         }
     </script>
 </body>
