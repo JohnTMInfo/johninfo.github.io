@@ -16,10 +16,11 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        /* VIVID 5-SECOND BACKGROUND CYCLE */
         @keyframes backgroundCycle {
             0%, 100% { background-color: #050505; }
-            33% { background-color: #1a0b2e; }
-            66% { background-color: #0b1a2e; }
+            33% { background-color: #240b36; } /* Vivid Purple */
+            66% { background-color: #0b2436; } /* Vivid Blue */
         }
 
         @keyframes accentCycle {
@@ -28,38 +29,18 @@
             66% { --accent: #3b82f6; }
         }
 
-        /* Phone Notification Animation */
-        @keyframes notificationSlide {
-            0% { transform: translate(-50%, -100px); opacity: 0; }
-            10% { transform: translate(-50%, 20px); opacity: 1; }
-            90% { transform: translate(-50%, 20px); opacity: 1; }
-            100% { transform: translate(-50%, -100px); opacity: 0; }
-        }
-
-        #music-notification {
+        /* SCANLINE OVERLAY */
+        body::after {
+            content: " ";
+            display: block;
             position: fixed;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 350px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 18px;
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            z-index: 1000;
-            opacity: 0;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.04));
+            z-index: 100;
+            background-size: 100% 4px, 3px 100%;
             pointer-events: none;
-            animation: notificationSlide 6s ease-in-out 2s forwards; /* Starts after 2 seconds */
         }
-
-        .notif-icon { width: 35px; height: 35px; border-radius: 8px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 18px; }
-        .notif-text { font-size: 13px; font-weight: 500; }
-        .notif-text span { display: block; color: var(--text-secondary); font-size: 11px; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -74,18 +55,26 @@
                        accentCycle 15s infinite alternate ease-in-out;
         }
 
-        body::after {
-            content: " ";
-            display: block;
-            position: fixed;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-            z-index: 100;
-            background-size: 100% 4px, 3px 100%;
-            pointer-events: none;
+        /* NOTIFICATION */
+        @keyframes notificationSlide {
+            0% { transform: translate(-50%, -100px); opacity: 0; }
+            10% { transform: translate(-50%, 20px); opacity: 1; }
+            90% { transform: translate(-50%, 20px); opacity: 1; }
+            100% { transform: translate(-50%, -100px); opacity: 0; }
         }
 
+        #music-notification {
+            position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 350px; background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 18px; padding: 12px 16px; display: flex; align-items: center;
+            gap: 12px; z-index: 1000; opacity: 0; pointer-events: none;
+            animation: notificationSlide 6s ease-in-out 3s forwards;
+        }
+
+        .notif-icon { width: 35px; height: 35px; border-radius: 8px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 18px; transition: 0.5s; }
+
+        /* FLOATING ICONS */
         .icon-stream { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
         .float-icon { position: absolute; width: 35px; height: 35px; opacity: 0; animation: floatPop 12s ease-out infinite; }
         .float-icon img { width: 100%; height: 100%; object-fit: contain; }
@@ -112,21 +101,17 @@
 
         h1 { font-size: 38px; font-weight: 900; letter-spacing: -1.5px; margin-bottom: 4px; }
 
+        /* TYPEWRITER BIO */
         .bio { 
-            color: var(--text-secondary); 
-            margin-bottom: 24px; 
-            font-size: 16px;
-            width: fit-content;
-            overflow: hidden;
-            border-right: 2px solid var(--accent);
-            white-space: nowrap;
-            letter-spacing: 0.5px;
-            animation: typing 3s steps(30, end), blink .75s step-end infinite;
+            color: var(--text-secondary); margin-bottom: 24px; font-size: 16px; width: fit-content;
+            overflow: hidden; border-right: 2px solid var(--accent); white-space: nowrap;
+            letter-spacing: 0.5px; animation: typing 3s steps(30, end), blink .75s step-end infinite;
         }
 
         @keyframes typing { from { width: 0 } to { width: 100% } }
         @keyframes blink { from, to { border-color: transparent } 50% { border-color: var(--accent) } }
 
+        /* SOCIAL CHIPS */
         .social-chips { display: flex; gap: 12px; margin-bottom: 40px; }
         .chip {
             display: flex; align-items: center; gap: 8px; padding: 10px 18px;
@@ -139,24 +124,30 @@
 
         .section-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.2em; color: var(--text-secondary); margin-bottom: 16px; display: block; opacity: 0.6; }
 
-        .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 40px; }
-        .gallery img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: var(--card-radius); border: 1px solid var(--border-subtle); transition: 0.3s; }
-        .gallery img:hover { transform: scale(1.03); border-color: var(--accent); }
+        /* SCROLLABLE GALLERY */
+        .gallery {
+            display: flex; gap: 12px; overflow-x: auto; margin-bottom: 40px;
+            padding-bottom: 10px; scroll-snap-type: x mandatory; scrollbar-width: none;
+        }
+        .gallery::-webkit-scrollbar { display: none; }
+        .gallery img {
+            min-width: 320px; height: 320px; object-fit: cover;
+            border-radius: var(--card-radius); border: 1px solid var(--border-subtle);
+            scroll-snap-align: center;
+        }
 
-        .music-card { background: #000; border-radius: 20px; overflow: hidden; border: 1px solid var(--border-subtle); margin-bottom: 12px; transition: 0.3s; }
+        /* MUSIC CARD */
+        .music-card { background: #000; border-radius: 20px; overflow: hidden; border: 1px solid var(--border-subtle); margin-bottom: 40px; transition: 0.3s; }
         .music-card:hover { border-color: var(--accent); }
 
-        .counter { margin-top: 40px; text-align: center; opacity: 0.6; }
+        .counter { margin-top: 20px; text-align: center; opacity: 0.6; }
     </style>
 </head>
 <body>
 
     <div id="music-notification">
         <div class="notif-icon">🎵</div>
-        <div class="notif-text">
-            Now Playing
-            <span>2hollis / Yeat</span>
-        </div>
+        <div class="notif-text">Now Playing<span id="now-playing-title">Loading vibe...</span></div>
     </div>
 
     <div class="icon-stream">
@@ -178,13 +169,13 @@
                     TikTok
                 </a>
                 <a href="https://www.roblox.com/users/8593516066/profile" target="_blank" class="chip">
-                    <svg viewBox="0 0 100 100"><path d="M18.8 71.2L31.2 21.6 81.2 34.1 68.8 83.7Z" fill="white"/></svg>
+                    <svg viewBox="0 0 100 100"><rect x="25" y="25" width="50" height="50" transform="rotate(15 50 50)" fill="white"/></svg>
                     Roblox
                 </a>
             </div>
         </div>
 
-        <span class="section-label">// PHOTOS</span>
+        <span class="section-label">// PHOTOS ➡️</span>
         <div class="gallery">
             <img src="LRM_20260424_121848.jpg">
             <img src="LRM_20260424_121524.jpg">
@@ -192,12 +183,8 @@
         </div>
 
         <span class="section-label">// NOW PLAYING</span>
-        <div class="music-card">
-            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM3M?utm_source=generator&theme=00" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        </div>
-        <div class="music-card">
-            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM3M?utm_source=generator&theme=01" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        </div>
+        <div class="music-card" id="spotify-container">
+            </div>
 
         <div class="counter">
             <span class="section-label" style="margin-bottom: 8px;">TOTAL VIEWS</span>
@@ -205,5 +192,19 @@
         </div>
     </div>
 
+    <script>
+        const songs = [
+            { url: "https://open.spotify.com/embed/track/25Y8e0tV6nS47H1fWlY1U4", title: "2hollis" },
+            { url: "https://open.spotify.com/embed/track/4jXAtV7UqM5vW0yV6F7X5w", title: "Yeat" }
+        ];
+
+        const randomSong = songs[Math.floor(Math.random() * songs.length)];
+        
+        document.getElementById('spotify-container').innerHTML = `
+            <iframe style="border-radius:12px" src="${randomSong.url}?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        `;
+        
+        document.getElementById('now-playing-title').innerText = randomSong.title;
+    </script>
 </body>
 </html>
