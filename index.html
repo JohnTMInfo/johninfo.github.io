@@ -8,7 +8,7 @@
         :root {
             --text-primary: #f8f8f8;
             --text-secondary: #a1a1aa;
-            --card-base: rgba(16, 16, 16, 0.4);
+            --card-base: rgba(16, 16, 16, 0.5);
             --border-subtle: rgba(255, 255, 255, 0.1);
             --card-radius: 20px;
             --accent: #22d3ee;
@@ -22,18 +22,20 @@
             66% { background-color: #0b2436; --accent: #3b82f6; }
         }
 
-        @keyframes typing { from { width: 0 } to { width: 100% } }
-        @keyframes blink { from, to { border-color: transparent } 50% { border-color: var(--accent) } }
+        @keyframes notificationSlide {
+            0% { transform: translate(-50%, -120px); opacity: 0; }
+            15% { transform: translate(-50%, 20px); opacity: 1; }
+            85% { transform: translate(-50%, 20px); opacity: 1; }
+            100% { transform: translate(-50%, -120px); opacity: 0; }
+        }
+
+        @keyframes shake { 0% { transform: translate(1px, 1px); } 50% { transform: translate(-1px, -1px); } }
 
         @keyframes floatPop {
             0% { transform: translateY(110vh) scale(0.5) rotate(0deg); opacity: 0; }
             10% { opacity: 0.5; transform: translateY(100vh) scale(1); }
             100% { transform: translateY(-20vh) scale(1.4) rotate(360deg); opacity: 0; }
         }
-
-        @keyframes auraPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-
-        @keyframes shake { 0% { transform: translate(1px, 1px); } 50% { transform: translate(-1px, -1px); } }
 
         .master-glitch { filter: invert(1) hue-rotate(180deg) contrast(3); animation: shake 0.1s infinite; }
 
@@ -46,54 +48,36 @@
             padding: 100px 20px;
             min-height: 100vh;
             overflow-x: hidden;
-            animation: backgroundCycle 15s infinite ease-in-out;
+            animation: backgroundCycle 15s infinite alternate ease-in-out;
             cursor: crosshair;
         }
 
         .scanlines::after {
-            content: " ";
-            display: block;
-            position: fixed;
-            top: 0; left: 0; bottom: 0; right: 0;
+            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), 
                         linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.05));
-            z-index: 100;
-            background-size: 100% 4px, 3px 100%;
-            pointer-events: none;
+            z-index: 100; background-size: 100% 4px, 3px 100%; pointer-events: none;
         }
+
+        .notification {
+            position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 350px; background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 18px; padding: 12px 16px; display: flex; align-items: center;
+            gap: 12px; z-index: 1000; opacity: 0; text-decoration: none; color: white;
+        }
+
+        #music-notif { animation: notificationSlide 6s ease-in-out 1s forwards; }
+        #discord-notif { animation: notificationSlide 6s ease-in-out 8s forwards; }
+
+        .notif-icon { width: 35px; height: 35px; border-radius: 8px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .notif-text { font-size: 13px; font-weight: 600; }
+        .notif-text span { display: block; color: var(--text-secondary); font-size: 11px; }
 
         .trail {
             position: fixed; width: 8px; height: 8px; background: var(--accent);
             border-radius: 50%; pointer-events: none; z-index: 999;
             box-shadow: 0 0 10px var(--accent); transition: transform 0.1s linear, opacity 0.5s;
-        }
-
-        #discord-widget {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 320px;
-            background: rgba(139, 0, 0, 0.4);
-            backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 35px; padding: 12px 20px;
-            display: flex; align-items: center; gap: 15px;
-            z-index: 1000; text-decoration: none; color: white;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .discord-avatar-wrap { position: relative; }
-        .discord-img { width: 55px; height: 55px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); }
-        .discord-status { 
-            position: absolute; bottom: 0; right: 0; width: 18px; height: 18px; 
-            background: #23a55a; border-radius: 50%; border: 3px solid #8b0000; 
-        }
-
-        .discord-info { flex-grow: 1; }
-        .discord-name { font-size: 22px; font-weight: 800; letter-spacing: -1px; }
-        .discord-msg { font-size: 15px; color: rgba(255,255,255,0.6); }
-
-        .location-tag {
-            display: flex; align-items: center; gap: 6px;
-            font-size: 15px; color: var(--text-secondary);
-            margin-bottom: 20px; opacity: 0.8;
         }
 
         .container { width: 100%; max-width: 400px; position: relative; z-index: 10; text-align: center; }
@@ -102,6 +86,11 @@
             width: 100px; height: 100px; border-radius: var(--card-radius);
             border: 2px solid var(--accent); box-shadow: 0 0 20px var(--accent);
             cursor: pointer; transition: 0.3s;
+        }
+
+        .location-tag {
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            font-size: 15px; color: var(--text-secondary); margin: 10px 0 20px 0; opacity: 0.8;
         }
 
         .bio { color: var(--text-secondary); margin-bottom: 25px; font-size: 16px; }
@@ -114,6 +103,16 @@
         }
         .chip svg { width: 18px; height: 18px; fill: currentColor; }
 
+        .stats-card {
+            background: var(--card-base); border: 1px solid var(--border-subtle);
+            border-radius: var(--card-radius); padding: 20px; margin-bottom: 40px;
+            text-align: left; position: relative; backdrop-filter: blur(10px);
+        }
+        .stats-header { color: var(--accent); font-weight: 800; font-size: 12px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .stat-item { margin-bottom: 8px; font-size: 14px; }
+        .stat-label { color: var(--text-secondary); font-weight: 600; margin-right: 5px; }
+        .stats-divider { height: 1px; background: var(--border-subtle); margin: 12px 0; }
+
         .gallery {
             display: flex; gap: 12px; overflow-x: auto; margin: 30px 0;
             padding-bottom: 10px; scroll-snap-type: x mandatory; scrollbar-width: none;
@@ -125,79 +124,80 @@
             scroll-snap-align: center;
         }
 
-        .aura-wrap { margin-top: 40px; text-align: left; }
-        .aura-bar { 
-            width: 100%; height: 6px; background: rgba(255,255,255,0.1); 
-            border-radius: 10px; overflow: hidden; margin-top: 8px;
+        /* TIKTOK FEED STYLES */
+        .tiktok-feed {
+            display: flex; gap: 12px; overflow-x: auto; margin: 30px 0;
+            padding-bottom: 10px; scroll-snap-type: x mandatory; scrollbar-width: none;
         }
-        .aura-fill { 
-            width: 88%; height: 100%; background: var(--accent); 
-            box-shadow: 0 0 15px var(--accent); animation: auraPulse 3s infinite;
-        }
-
-        #sam-text {
-            margin-top: 60px;
-            font-size: 12px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            cursor: pointer;
-            user-select: none;
+        .tiktok-feed::-webkit-scrollbar { display: none; }
+        .tiktok-video {
+            min-width: 320px; max-width: 320px;
+            background: var(--card-base); border-radius: var(--card-radius);
+            border: 1px solid var(--border-subtle); scroll-snap-align: center;
+            overflow: hidden;
         }
 
-        .crt-toggle {
-            position: fixed; bottom: 20px; left: 20px; padding: 10px;
-            background: var(--card-base); border: 1px solid var(--accent);
-            border-radius: 10px; color: var(--accent); font-size: 10px; z-index: 1001;
-        }
+        .aura-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; margin-top: 8px; }
+        .aura-fill { width: 88%; height: 100%; background: var(--accent); box-shadow: 0 0 15px var(--accent); }
+
+        #sam-text { margin-top: 60px; font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 4px; cursor: pointer; user-select: none; }
+
+        .crt-toggle { position: fixed; bottom: 20px; left: 20px; padding: 10px; background: var(--card-base); border: 1px solid var(--accent); border-radius: 100px; color: var(--accent); font-size: 10px; z-index: 1001; }
 
         .icon-stream { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
         .float-icon { position: absolute; width: 35px; height: 35px; opacity: 0; animation: floatPop 12s ease-out infinite; }
-        .float-icon img { width: 100%; height: 100%; object-fit: contain; }
-        .icon-1 { left: 10%; animation-delay: 0s; }
-        .icon-2 { left: 30%; animation-delay: 3s; }
-        .icon-3 { left: 55%; animation-delay: 6s; }
-        .icon-4 { left: 80%; animation-delay: 9s; }
     </style>
 </head>
 <body id="main-body" class="scanlines">
 
-    <a href="https://discord.gg/bdfZ49ASS" target="_blank" id="discord-widget">
-        <div class="discord-avatar-wrap">
-            <img src="1777905444446.jpeg" class="discord-img">
-            <div class="discord-status"></div>
-        </div>
-        <div class="discord-info">
-            <div class="discord-name">xoztar.</div>
-            <div class="discord-msg">hi</div>
-        </div>
-        <div style="opacity: 0.5;">➡️</div>
+    <div class="notification" id="music-notif">
+        <div class="notif-icon">🎵</div>
+        <div class="notif-text">Now Playing<span id="notif-track">...</span></div>
+    </div>
+
+    <a href="https://discord.gg/bdfZ49ASS" target="_blank" class="notification" id="discord-notif">
+        <div class="notif-icon">💬</div>
+        <div class="notif-text">join this server !!<span>discord.gg/bdfZ49ASS</span></div>
     </a>
 
     <div class="icon-stream">
-        <div class="float-icon icon-1"><img src="1995-confusedpengu.png"></div>
-        <div class="float-icon icon-2"><img src="1785-pepeloading.png"></div>
-        <div class="float-icon icon-3"><img src="937928-alien-yap.gif"></div>
-        <div class="float-icon icon-4"><img src="734879-fishspinning.gif"></div>
+        <div class="float-icon" style="left:10%; animation-delay:0s;"><img src="1995-confusedpengu.png"></div>
+        <div class="float-icon" style="left:30%; animation-delay:3s;"><img src="1785-pepeloading.png"></div>
+        <div class="float-icon" style="left:55%; animation-delay:6s;"><img src="937928-alien-yap.gif"></div>
+        <div class="float-icon" style="left:80%; animation-delay:9s;"><img src="734879-fishspinning.gif"></div>
     </div>
 
     <div class="container">
-        <img src="Untitled design.png" class="avatar" id="main-avatar" onclick="checkSecret()">
-        <h1 style="font-size: 42px; margin-top: 10px;">John™</h1>
-        
+        <img src="Untitled design.png" class="avatar" onclick="checkSecret()">
+        <h1>John™</h1>
         <div class="location-tag">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
             London Uk 🇬🇧
         </div>
-
         <p class="bio">just a guy on the internet vibing.</p>
 
         <div class="social-chips">
-            <a href="https://www.tiktok.com/@neoztar" target="_blank" class="chip">TikTok</a>
-            <a href="https://www.roblox.com/users/8593516066/profile" target="_blank" class="chip">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M18.574 15.652l-4.14 1.49-1.49-4.14 4.14-1.49 1.49 4.14zM8.31 10.478l4.14-1.49 1.49 4.14-4.14 1.49-1.49-4.14zM4.444 2.106L2.106 8.574l6.468 2.338 2.338-6.468-6.468-2.338zm13.112 13.32l2.338-6.468-6.468-2.338-2.338 6.468 6.468 2.338zM2.106 15.426l2.338 6.468 6.468-2.338-2.338-6.468-6.468 2.338zm13.32-13.112l-6.468 2.338 2.338 6.468 6.468-2.338-2.338-6.468z"/></svg>
+            <a href="https://www.tiktok.com/@neoztar" class="chip">
+                <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.03 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.9-.32-1.98-.23-2.81.33-.85.51-1.28 1.43-1.35 2.4-.04.41.01.82.17 1.2.3.74.82 1.34 1.54 1.63.76.34 1.53.3 2.3.03.8-.25 1.45-.79 1.84-1.53.24-.48.35-.98.35-1.51V.02z"/></svg>
+                TikTok
+            </a>
+            <a href="https://www.roblox.com/users/8593516066/profile" class="chip">
+                <svg viewBox="0 0 24 24"><path d="M18.574 15.652l-4.14 1.49-1.49-4.14 4.14-1.49 1.49 4.14zM8.31 10.478l4.14-1.49 1.49 4.14-4.14 1.49-1.49-4.14zM4.444 2.106L2.106 8.574l6.468 2.338 2.338-6.468-6.468-2.338zm13.112 13.32l2.338-6.468-6.468-2.338-2.338 6.468 6.468 2.338zM2.106 15.426l2.338 6.468 6.468-2.338-2.338-6.468-6.468 2.338zm13.32-13.112l-6.468 2.338 2.338 6.468 6.468-2.338-2.338-6.468z"/></svg>
                 Roblox
             </a>
+        </div>
+
+        <div class="stats-card">
+            <div class="stats-header">🛸 ROBLOX_STATS</div>
+            <div class="stat-item"><span class="stat-label">Profile:</span> John</div>
+            <div class="stat-item"><span class="stat-label">Handle:</span> @pokkiexx3</div>
+            <div class="stat-item"><span class="stat-label">ID:</span> 8593516066</div>
+            <div class="stats-divider"></div>
+            <div class="stat-item"><span class="stat-label">Friends:</span> 96</div>
+            <div class="stat-item"><span class="stat-label">Followers:</span> 32</div>
+            <div class="stat-item"><span class="stat-label">Following:</span> 8</div>
+            <div class="stats-divider"></div>
+            <div class="stat-item"><span class="stat-label">History:</span> Joined 06/02/2025</div>
         </div>
 
         <span style="font-size: 11px; letter-spacing: 2px; opacity: 0.5; font-weight: 800;">MY PHOTOS ➡️</span>
@@ -208,7 +208,14 @@
             <img src="1777904019291.jpeg">
         </div>
 
-        <div id="spotify-container" style="background:#000; border-radius:20px; overflow:hidden;"></div>
+        <span style="font-size: 11px; letter-spacing: 2px; opacity: 0.5; font-weight: 800;">LATEST TIKTOKS ➡️</span>
+        <div class="tiktok-feed">
+            <div class="tiktok-video">
+                <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@neoztar" data-unique-id="neoztar" data-embed-type="creator" style="max-width: 780px; min-width: 288px;" > <section> <a target="_blank" href="https://www.tiktok.com/@neoztar?refer=creator_embed">@neoztar</a> </section> </blockquote>
+            </div>
+        </div>
+
+        <div id="spotify-container" style="background:#000; border-radius:20px; overflow:hidden; margin-bottom:40px;"></div>
 
         <div class="aura-wrap">
             <span style="font-size: 10px; opacity: 0.6; font-weight: 800;">CURRENT AURA LEVEL</span>
@@ -220,12 +227,12 @@
 
     <button class="crt-toggle" onclick="toggleCRT()">CRT: ON</button>
 
+    <script async src="https://www.tiktok.com/embed.js"></script>
     <script>
         document.addEventListener('mousemove', (e) => {
             const trail = document.createElement('div');
             trail.className = 'trail';
-            trail.style.left = e.pageX + 'px';
-            trail.style.top = e.pageY + 'px';
+            trail.style.left = e.pageX + 'px'; trail.style.top = e.pageY + 'px';
             document.body.appendChild(trail);
             setTimeout(() => { trail.style.opacity = '0'; trail.style.transform = 'scale(0)'; }, 100);
             setTimeout(() => { trail.remove(); }, 600);
@@ -240,15 +247,16 @@
         function checkSecret() {
             taps++;
             if(taps === 5) {
-                document.body.innerHTML = "<h1 style='color:lime; font-family:monospace; padding:50px;'>SYSTEM REBOOT...</h1>";
+                document.body.innerHTML = "<h1 style='color:lime; font-family:monospace; padding:50px; text-align:center;'>SYSTEM REBOOT...</h1>";
                 setTimeout(() => { location.reload(); }, 2000);
             }
             setTimeout(() => { taps = 0; }, 2000);
         }
 
-        const songs = ["4oE8VfB9PjQYxU7G0N1jQo", "0b0sjLiEsnYORnOFB7ewUj"];
+        const songs = [{id:"4oE8VfB9PjQYxU7G0N1jQo", t:"Krank - Yeat"}, {id:"0b0sjLiEsnYORnOFB7ewUj", t:"2hollis"}];
         const pick = songs[Math.floor(Math.random() * songs.length)];
-        document.getElementById('spotify-container').innerHTML = `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/${pick}?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+        document.getElementById('spotify-container').innerHTML = `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/${pick.id}?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+        document.getElementById('notif-track').innerText = pick.t;
 
         function triggerGlitch() {
             document.body.classList.add('master-glitch');
