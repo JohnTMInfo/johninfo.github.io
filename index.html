@@ -49,10 +49,7 @@
             100% { transform: translate(-50%, -100px); opacity: 0; }
         }
 
-        .master-glitch { 
-            filter: invert(1) hue-rotate(180deg) contrast(3) !important; 
-            animation: shake 0.1s infinite !important; 
-        }
+        .master-glitch { filter: invert(1) hue-rotate(180deg) contrast(3) !important; animation: shake 0.1s infinite !important; }
         @keyframes shake { 0% { transform: translate(1px, 1px); } 50% { transform: translate(-1px, -1px); } }
 
         body {
@@ -62,27 +59,6 @@
             padding: 50px 20px; min-height: 100vh; overflow-x: hidden;
             animation: backgroundCycle 15s infinite alternate ease-in-out;
         }
-
-        /* LOGIN SCREEN */
-        #login-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px);
-            z-index: 10000; display: flex; align-items: center; justify-content: center; flex-direction: column;
-        }
-        .login-box {
-            background: var(--card-base); border: 2px solid var(--accent); border-radius: var(--card-radius);
-            padding: 30px; text-align: center; box-shadow: 0 0 40px rgba(34, 211, 238, 0.3); width: 90%; max-width: 320px;
-        }
-        .login-box h2 { font-size: 16px; color: var(--accent); margin-bottom: 20px; letter-spacing: 2px; text-transform: uppercase; }
-        .login-box input {
-            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-subtle);
-            background: rgba(0,0,0,0.5); color: #fff; font-size: 14px; text-align: center; margin-bottom: 20px; outline: none;
-        }
-        .login-box input:focus { border-color: var(--accent); box-shadow: 0 0 10px var(--accent); }
-        .login-box button {
-            background: var(--accent); color: #000; font-weight: 900; font-size: 14px; padding: 12px 30px;
-            border: none; border-radius: 8px; cursor: pointer; transition: 0.3s; width: 100%;
-        }
-        .login-box button:hover { background: #fff; box-shadow: 0 0 20px #fff; }
 
         .notification {
             position: fixed; top: 0; left: 50%; transform: translateX(-50%);
@@ -123,8 +99,6 @@
         .chip:hover { border-color: var(--accent); box-shadow: 0 0 15px var(--accent); transform: translateY(-2px); }
         .chip svg { width: 16px; height: 16px; fill: white; }
 
-        .category-label { font-size: 10px; font-weight: 900; color: var(--accent); letter-spacing: 4px; text-transform: uppercase; margin: 40px 0 15px 0; display: block; opacity: 0.6; }
-
         .gallery { display: flex; gap: 12px; overflow-x: auto; margin-bottom: 30px; padding: 15px 0; scrollbar-width: none; }
         .gallery img { min-width: 280px; height: 280px; object-fit: cover; border-radius: var(--card-radius); border: 1px solid var(--border-subtle); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
         .gallery img:active { transform: scale(1.1); z-index: 100; position: relative; }
@@ -147,23 +121,21 @@
         .lb-score { color: var(--accent); text-shadow: 0 0 10px var(--accent); }
         .lb-me { background: rgba(34, 211, 238, 0.15); border-radius: 10px; padding: 12px; margin: 0 -10px; border: 1px solid rgba(34, 211, 238, 0.4); display: flex; width: calc(100% + 20px); box-shadow: 0 0 20px rgba(34, 211, 238, 0.1); }
 
+        .sync-card { background: var(--card-base); border: 1px solid var(--border-subtle); border-radius: 15px; padding: 15px; margin-top: 15px; margin-bottom: 40px; display: flex; gap: 10px; width: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .sync-card input { flex: 1; padding: 10px 15px; border-radius: 8px; border: 1px solid var(--border-subtle); background: rgba(0,0,0,0.5); color: #fff; font-size: 13px; outline: none; font-weight: bold; }
+        .sync-card input:focus { border-color: var(--accent); }
+        .sync-card button { background: var(--accent); color: #000; font-weight: 900; font-size: 12px; padding: 0 20px; border: none; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .sync-card button:hover { background: #fff; box-shadow: 0 0 10px #fff; }
+
         .icon-stream, .text-stream { position: fixed; inset: 0; pointer-events: none; z-index: 1500; }
         .float-icon { position: absolute; width: 50px; height: 50px; pointer-events: auto; animation: floatPop 7s linear infinite; cursor: pointer; }
         .floating-text { position: absolute; font-family: 'Courier New', Courier, monospace; font-size: 13px; font-weight: bold; color: var(--accent); white-space: nowrap; animation: floatText 4s ease-out forwards; pointer-events: none; text-shadow: 0 0 5px var(--accent), 0 0 15px var(--accent); }
 
-        #sam-text { margin-top: 40px; font-size: 10px; opacity: 0; letter-spacing: 5px; cursor: pointer; text-transform: uppercase; transition: 0.4s; }
+        #sam-text { margin-bottom: 40px; font-size: 10px; opacity: 0; letter-spacing: 5px; cursor: pointer; text-transform: uppercase; transition: 0.4s; }
         #sam-text:hover { opacity: 0.5; }
     </style>
 </head>
 <body id="main-body" class="scanlines">
-
-    <div id="login-overlay">
-        <div class="login-box">
-            <h2>Enter Identity</h2>
-            <input type="text" id="username-input" placeholder="Your username..." maxlength="15">
-            <button onclick="saveIdentity()">SYNC DATA</button>
-        </div>
-    </div>
 
     <div id="zoom-overlay" onclick="closeZoom(event)">
         <button id="nav-left" class="nav-btn" onclick="changeSlide(-1, event)">❮</button>
@@ -211,7 +183,6 @@
             </a>
         </div>
 
-        <span class="category-label">Roblox Profile</span>
         <div class="roblox-bot-card">
             <div class="rb-header"><span>👽</span> Profile: John</div>
             <div class="rb-section">
@@ -233,12 +204,10 @@
             </div>
         </div>
 
-        <span class="category-label">My favorite song</span>
         <div id="spotify-container">
-            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/25sN9i2V4Knv2r4H4LtsNn?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/6pWgEikGlaC23x3rW23Z9Y?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </div>
 
-        <span class="category-label">Gallery</span>
         <div class="gallery" id="photo-gallery">
             <img src="LRM_20260424_121848.jpg" onclick="openGallery(this)">
             <img src="LRM_20260424_121524.jpg" onclick="openGallery(this)">
@@ -246,12 +215,10 @@
             <img src="LRM_20260424_122043.jpg" onclick="openGallery(this)">
         </div>
 
-        <span class="category-label">TikTok Feed</span>
         <div class="tiktok-feed-box">
             <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@neoztar" data-unique-id="neoztar" data-embed-type="creator"> <section> <a target="_blank" href="https://www.tiktok.com/@neoztar">@neoztar</a> </section> </blockquote>
         </div>
 
-        <span class="category-label">Aura Leaderboard</span>
         <div class="leaderboard-card">
             <div class="lb-row"><span class="lb-rank">#1</span><span class="lb-name">Neoztar</span><span class="lb-score">99,900</span></div>
             <div class="lb-row"><span class="lb-rank">#2</span><span class="lb-name">Dudeami</span><span class="lb-score">50,200</span></div>
@@ -263,13 +230,17 @@
             </div>
         </div>
 
+        <div class="sync-card">
+            <input type="text" id="username-input" placeholder="Set Identity..." maxlength="15">
+            <button onclick="saveIdentity()">SYNC</button>
+        </div>
+
         <div id="sam-text" onclick="triggerGlitch()">sam is cool asf</div>
     </div>
 
     <script async src="https://www.tiktok.com/embed.js"></script>
     <script>
-        // LOAD DATA FROM BROWSER STORAGE
-        let myUsername = localStorage.getItem('john_username');
+        let myUsername = localStorage.getItem('john_username') || '';
         let aura = localStorage.getItem('john_aura') ? parseInt(localStorage.getItem('john_aura')) : 0;
         
         const iconImages = ['1995-confusedpengu.png', '1785-pepeloading.png', '937928-alien-yap.gif', '734879-fishspinning.gif'];
@@ -279,37 +250,9 @@
         let currentSlide = 0;
 
         window.onload = function() {
-            // Check if user has an identity saved
-            if (!myUsername) {
-                document.getElementById('login-overlay').style.display = 'flex';
-            } else {
-                initSite();
-            }
-            
-            const imgs = document.querySelectorAll('#photo-gallery img');
-            imgs.forEach(img => galleryImages.push(img.src));
-        };
+            document.getElementById('username-input').value = myUsername;
+            updateUI();
 
-        function saveIdentity() {
-            const input = document.getElementById('username-input').value.trim();
-            if (input === "") return;
-            
-            myUsername = input;
-            localStorage.setItem('john_username', myUsername);
-            document.getElementById('login-overlay').style.display = 'none';
-            initSite();
-        }
-
-        function initSite() {
-            // Hide login modal just in case
-            document.getElementById('login-overlay').style.display = 'none';
-
-            // Update UI with saved data
-            document.getElementById('aura-score').innerText = "AURA: " + aura;
-            document.getElementById('lb-my-name').innerText = myUsername + " (You)";
-            document.getElementById('lb-my-score').innerText = aura.toLocaleString();
-
-            // Trigger Notifications
             const mNotif = document.getElementById('notif-music');
             mNotif.classList.add('notif-active');
             setTimeout(() => {
@@ -318,9 +261,29 @@
                 dNotif.classList.add('notif-active');
             }, 6000);
             
-            // Start Spawners
             setInterval(spawnIcon, 2500);
             setInterval(spawnText, 3500);
+
+            const imgs = document.querySelectorAll('#photo-gallery img');
+            imgs.forEach(img => galleryImages.push(img.src));
+        };
+
+        function saveIdentity() {
+            const input = document.getElementById('username-input').value.trim();
+            if (input === "") return;
+            myUsername = input;
+            localStorage.setItem('john_username', myUsername);
+            updateUI();
+            
+            const btn = document.querySelector('.sync-card button');
+            btn.innerText = "SAVED!";
+            setTimeout(() => btn.innerText = "SYNC", 1500);
+        }
+
+        function updateUI() {
+            document.getElementById('aura-score').innerText = "AURA: " + aura;
+            document.getElementById('lb-my-name').innerText = (myUsername || "Guest") + " (You)";
+            document.getElementById('lb-my-score').innerText = aura.toLocaleString();
         }
 
         function spawnIcon() {
@@ -368,19 +331,14 @@
         }
 
         function capture(el, name, src) {
-            // Add Aura
             aura += 100;
-            
-            // Save to Local Storage immediately
             localStorage.setItem('john_aura', aura);
-            
-            // Update UI
-            document.getElementById('aura-score').innerText = "AURA: " + aura;
-            document.getElementById('lb-my-score').innerText = aura.toLocaleString();
+            updateUI();
 
             const modal = document.getElementById('achievement-modal');
             document.getElementById('modal-img').src = src;
-            document.getElementById('modal-aura-text').innerText = "+100 AURA FOR " + myUsername.toUpperCase();
+            const displayName = myUsername ? myUsername.toUpperCase() : "GUEST";
+            document.getElementById('modal-aura-text').innerText = "+100 AURA FOR " + displayName;
             modal.style.display = 'block';
             setTimeout(() => { modal.style.display = 'none'; }, 1800);
             el.remove();
