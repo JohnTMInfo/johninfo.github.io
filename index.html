@@ -1,52 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="google-site-verification" content="Tnjwyc1dV4NNLWnZlBUXjS9Z517LWtMRrz_P4LpZeVo" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JohnTMInfo | Profile</title>
+    <title>John™ | Profile</title>
     <style>
-        :root { --bg: #09090b; --card: #18181b; --accent: #22d3ee; --text: #ffffff; --secondary: #a1a1aa; }
-        body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; }
-        .container { width: 100%; max-width: 450px; }
-        .profile { text-align: left; margin-bottom: 30px; }
-        .avatar { width: 70px; height: 70px; border-radius: 15px; background: #27272a; margin-bottom: 15px; overflow: hidden; border: 1px solid #ffffff10; }
-        .avatar img { width: 100%; height: 100%; object-fit: cover; }
-        h1 { font-size: 32px; margin: 0; letter-spacing: -1px; }
-        .bio { color: var(--secondary); font-size: 16px; margin-top: 5px; }
-        .social-row { display: flex; gap: 20px; margin: 20px 0; }
-        .social-row a { color: var(--text); text-decoration: none; opacity: 0.6; font-size: 18px; font-weight: bold; }
-        .section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--secondary); margin-bottom: 15px; display: block; border-bottom: 1px solid #ffffff10; padding-bottom: 5px; margin-top: 20px; }
-        .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 30px; }
-        .gallery img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 12px; border: 1px solid #ffffff10; }
-        .music-card { width: 100%; border-radius: 12px; overflow: hidden; margin-top: 20px; }
+        :root {
+            --bg-deep: #050505;
+            --card-base: #101010;
+            --text-primary: #f8f8f8;
+            --text-secondary: #a1a1aa;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --card-radius: 18px;
+            
+            /* The starting color */
+            --accent-glow: #22d3ee; 
+        }
+
+        /* SMOOTH COLOR TRANSITION */
+        /* Cycles every 30s (10s per color phase: Cyan -> Purple -> Blue) */
+        @keyframes colorCycle {
+            0%, 100% { --accent-glow: #22d3ee; }
+            33% { --accent-glow: #9d1dfd; }
+            66% { --accent-glow: #3b82f6; }
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            padding: 60px 20px;
+            overflow-x: hidden;
+            position: relative;
+            /* Runs the color cycle globally */
+            animation: colorCycle 30s infinite alternate ease-in-out;
+        }
+
+        /* Animated grid background */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background-image: 
+                linear-gradient(var(--accent-glow) 0.5px, transparent 0.5px),
+                linear-gradient(90deg, var(--accent-glow) 0.5px, transparent 0.5px);
+            background-size: 60px 60px;
+            opacity: 0.15;
+            animation: backgroundDrift 60s linear infinite;
+            pointer-events: none;
+            z-index: -1;
+            transition: background-image 0.5s ease;
+        }
+
+        @keyframes backgroundDrift {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(5deg); }
+        }
+
+        /* Floating Icons Section */
+        .icon-stream {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .float-icon {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            opacity: 0;
+            animation: floatPop 12s ease-out infinite;
+        }
+
+        .float-icon img { width: 100%; height: 100%; object-fit: contain; }
+
+        @keyframes floatPop {
+            0% { transform: translateY(110vh) scale(0.5) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; transform: translateY(100vh) scale(1) rotate(15deg); }
+            100% { transform: translateY(-20vh) scale(1.4) rotate(360deg); opacity: 0; }
+        }
+
+        .icon-1 { left: 5%; animation-delay: 0s; }
+        .icon-2 { left: 25%; animation-delay: 2s; }
+        .icon-3 { left: 50%; animation-delay: 4s; }
+        .icon-4 { left: 70%; animation-delay: 6s; }
+        .icon-5 { left: 90%; animation-delay: 8s; }
+        .icon-6 { left: 15%; animation-delay: 5s; }
+
+        /* Main Fade-Up Animation */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            animation: fadeUp 1.2s ease-out forwards;
+            position: relative;
+            z-index: 20;
+        }
+
+        .avatar {
+            width: 90px; height: 90px;
+            border-radius: var(--card-radius);
+            object-fit: cover;
+            margin-bottom: 16px;
+            border: 2px solid var(--accent-glow);
+            box-shadow: 0 0 30px var(--accent-glow);
+            transition: border-color 0.5s, box-shadow 0.5s;
+        }
+
+        h1 { font-size: 38px; font-weight: 900; letter-spacing: -1.8px; margin-bottom: 4px; }
+        .bio { color: var(--text-secondary); font-size: 16px; margin-bottom: 24px; }
+
+        .social-chips { display: flex; gap: 12px; margin-bottom: 40px; }
+        .chip {
+            padding: 10px 22px;
+            background: var(--card-base);
+            border: 1px solid var(--border-subtle);
+            border-radius: 100px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        .chip:hover { border-color: var(--accent-glow); background: rgba(255, 255, 255, 0.03); }
+
+        .section-label {
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.2em; color: var(--text-secondary);
+            margin-bottom: 16px; display: block; opacity: 0.5;
+        }
+
+        .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 40px; }
+        .gallery img {
+            width: 100%; aspect-ratio: 1/1; object-fit: cover;
+            border-radius: var(--card-radius); border: 1px solid var(--border-subtle);
+            transition: 0.4s ease;
+        }
+        .gallery img:hover { transform: scale(1.04); border-color: var(--accent-glow); }
+
+        .spotify-card {
+            background: #000; border-radius: 20px; overflow: hidden;
+            border: 1px solid var(--border-subtle);
+            transition: border-color 0.5s;
+        }
+        .spotify-card:hover { border-color: var(--accent-glow); }
     </style>
 </head>
 <body>
+
+    <div class="icon-stream">
+        <div class="float-icon icon-1"><img src="1995-confusedpengu.png"></div>
+        <div class="float-icon icon-2"><img src="1785-pepeloading.png"></div>
+        <div class="float-icon icon-3"><img src="937928-alien-yap.gif"></div>
+        <div class="float-icon icon-4"><img src="6274-trolled.png"></div>
+        <div class="float-icon icon-5"><img src="483862-loading (1).gif"></div>
+        <div class="float-icon icon-6"><img src="734879-fishspinning.gif"></div>
+    </div>
+
     <div class="container">
-        <div class="profile">
-            <div class="avatar"><img src="1000034582.jpg" alt=""></div>
-            <h1>Neoztar</h1>
-            <div class="bio">just a guy on the internet vibing.</div>
+        <div class="profile-header">
+            <img src="LRM_20260424_122043.jpg" alt="John" class="avatar">
+            <h1>John™</h1>
+            <p class="bio">just a guy on the internet vibing.</p>
+            
+            <div class="social-chips">
+                <a href="https://www.tiktok.com/@neoztar" target="_blank" class="chip">TikTok</a>
+                <a href="https://www.roblox.com/users/8593516066/profile" target="_blank" class="chip">Roblox</a>
+            </div>
         </div>
 
-        <div class="social-row">
-            <a href="https://www.tiktok.com/@neoztar">TikTok</a>
-            <a href="https://www.roblox.com/users/8593516066/profile">Roblox</a>
-        </div>
-
-        <span class="section-title">// PHOTOS</span>
+        <span class="section-label">// PHOTOS</span>
         <div class="gallery">
-            <img src="1000034580.jpg">
-            <img src="1000034581.jpg">
-            <img src="1000034583.jpg">
-            <img src="1000034584.jpg">
+            <img src="LRM_20260424_121848.jpg">
+            <img src="LRM_20260424_121524.jpg">
+            <img src="LRM_20260424_121122.jpg">
+            <img src="1777900664666.jpeg">
         </div>
 
-        <span class="section-title">// NOW PLAYING</span>
-        <div class="music-card">
-            <iframe src="https://open.spotify.com/embed/track/6UelLqGlWMvD_YvY6bd9Yf" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <span class="section-label">// NOW PLAYING</span>
+        <div class="spotify-card">
+            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/1yTqyvLqG57UfDozD0nLly?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </div>
     </div>
+
 </body>
 </html>
+
