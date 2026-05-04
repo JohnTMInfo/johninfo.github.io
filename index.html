@@ -16,7 +16,7 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* ENTER OVERLAY */
+        /* ENTRY OVERLAY */
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #050505; z-index: 9999; display: flex;
@@ -71,12 +71,7 @@
             cursor: pointer; transition: 0.3s;
         }
 
-        .location-tag {
-            display: flex; align-items: center; justify-content: center; gap: 6px;
-            font-size: 15px; color: var(--text-secondary); margin: 10px 0 20px 0; opacity: 0.8;
-        }
-
-        .social-chips { display: flex; gap: 12px; justify-content: center; margin-bottom: 40px; }
+        .social-chips { display: flex; gap: 12px; justify-content: center; margin: 30px 0 40px 0; }
         .chip {
             display: flex; align-items: center; gap: 8px; padding: 10px 18px;
             background: var(--card-base); border: 1px solid var(--border-subtle);
@@ -88,23 +83,37 @@
             display: flex; gap: 12px; overflow-x: auto; margin: 30px 0;
             padding-bottom: 10px; scroll-snap-type: x mandatory; scrollbar-width: none;
         }
-        .gallery img { min-width: 320px; height: 320px; object-fit: cover; border-radius: var(--card-radius); border: 1px solid var(--border-subtle); scroll-snap-align: center; }
+        .gallery img, .tiktok-video {
+            min-width: 320px; max-width: 320px; height: 320px; object-fit: cover;
+            border-radius: var(--card-radius); border: 1px solid var(--border-subtle);
+            scroll-snap-align: center; overflow: hidden;
+        }
+
+        /* MUSIC PLAYER */
+        .player-header { font-size: 11px; letter-spacing: 2px; opacity: 0.5; font-weight: 800; margin-bottom: 15px; display: block; }
+        .music-player { background: #000; border-radius: var(--card-radius); overflow: hidden; margin-bottom: 10px; border: 1px solid var(--border-subtle); }
+        .skip-btn {
+            background: var(--card-base); border: 1px solid var(--accent);
+            color: var(--accent); padding: 8px 15px; border-radius: 100px;
+            font-size: 10px; font-weight: 800; cursor: pointer; letter-spacing: 2px;
+            margin-bottom: 40px; transition: 0.3s;
+        }
 
         .stats-card {
             background: var(--card-base); border: 1px solid var(--border-subtle);
-            border-radius: var(--card-radius); padding: 20px; margin-bottom: 40px;
+            border-radius: var(--card-radius); padding: 20px; margin: 40px 0;
             text-align: left; position: relative; backdrop-filter: blur(10px);
         }
         .stats-header { color: var(--accent); font-weight: 800; font-size: 12px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
         .stats-header img { width: 24px; height: 24px; object-fit: contain; }
 
         .aura-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; margin-top: 8px; }
-        .aura-fill { width: 85%; height: 100%; background: var(--accent); box-shadow: 0 0 15px var(--accent); transition: width 2s ease; }
+        .aura-fill { width: 85%; height: 100%; background: var(--accent); box-shadow: 0 0 15px var(--accent); }
 
         .icon-stream { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1500; }
         .float-icon { position: absolute; width: 45px; height: 45px; opacity: 0; animation: floatPop 12s ease-out infinite; cursor: pointer; pointer-events: auto; }
         .float-icon img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
-        
+
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
     </style>
 </head>
@@ -124,20 +133,20 @@
     <div class="container">
         <img src="Untitled design.png" class="avatar" onclick="triggerGlitch()">
         <h1>John™</h1>
-        <div class="location-tag">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-            London Uk 🇬🇧
-        </div>
-        <p style="color: var(--text-secondary); margin-bottom: 25px;">just a guy on the internet vibing.</p>
+        <div style="color:var(--text-secondary); font-size: 14px; margin: 10px 0 20px 0;">London Uk 🇬🇧</div>
 
         <div class="social-chips">
-            <a href="https://www.tiktok.com/@neoztar" class="chip" target="_blank">TikTok</a>
+            <a href="https://www.tiktok.com/@neoztar" class="chip" target="_blank">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.03 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.9-.32-1.98-.23-2.81.33-.85.51-1.28 1.43-1.35 2.4-.04.41.01.82.17 1.2.3.74.82 1.34 1.54 1.63.76.34 1.53.3 2.3.03.8-.25 1.45-.79 1.84-1.53.24-.48.35-.98.35-1.51V.02z"/></svg>
+                TikTok
+            </a>
             <a href="https://www.roblox.com/users/8593516066/profile" class="chip" target="_blank">
-                <img src="1000035284-fotor-bg-remover-20260504165235.png" alt="Roblox">
+                <img src="1000035284-fotor-bg-remover-20260504165235.png">
                 Roblox
             </a>
         </div>
 
+        <span style="font-size: 11px; letter-spacing: 2px; opacity: 0.5; font-weight: 800;">MY PHOTOS ➡️</span>
         <div class="gallery">
             <img src="LRM_20260424_121848.jpg">
             <img src="LRM_20260424_121524.jpg">
@@ -145,48 +154,58 @@
             <img src="LRM_20260424_122043.jpg">
         </div>
 
-        <div id="spotify-container" style="background:#000; border-radius:20px; overflow:hidden; margin-bottom:40px;"></div>
+        <span class="player-header">FULL TRACKS [SKIP ENABLED]</span>
+        <div class="music-player" id="player-wrap"></div>
+        <button class="skip-btn" onclick="skipTrack()">SKIP TRACK ⏭️</button>
 
         <div class="stats-card">
             <div class="stats-header">
-                <img src="1000035284-fotor-bg-remover-20260504165235.png" alt="Roblox">
+                <img src="1000035284-fotor-bg-remover-20260504165235.png">
                 ROBLOX_INFO
             </div>
-            <div style="font-size: 14px; line-height: 1.6;">
-                <p><span style="color:var(--text-secondary)">Profile:</span> John</p>
+            <div style="font-size: 14px; line-height: 1.8;">
                 <p><span style="color:var(--text-secondary)">Handle:</span> @pokkiexx3</p>
-                <div style="height:1px; background:var(--border-subtle); margin:10px 0;"></div>
                 <p><span style="color:var(--text-secondary)">Friends:</span> 96 | Followers: 32</p>
+                <p><span style="color:var(--text-secondary)">Joined:</span> 06/02/2025</p>
+            </div>
+        </div>
+
+        <span style="font-size: 11px; letter-spacing: 2px; opacity: 0.5; font-weight: 800;">LATEST TIKTOKS ➡️</span>
+        <div class="tiktok-feed">
+            <div class="tiktok-video">
+                <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@neoztar" data-unique-id="neoztar" data-embed-type="creator"> <section> <a target="_blank" href="https://www.tiktok.com/@neoztar">@neoztar</a> </section> </blockquote>
             </div>
         </div>
 
         <div class="aura-bar"><div class="aura-fill" id="aura-fill"></div></div>
-        <div id="sam-text" onclick="triggerGlitch()" style="margin-top:30px; font-size:10px; opacity:0.5; cursor:pointer;">sam is lowkey cool asf</div>
+        <div id="sam-text" onclick="triggerGlitch()" style="margin-top:30px; font-size:10px; opacity:0.5; cursor:pointer; letter-spacing: 3px;">sam is lowkey cool asf</div>
     </div>
 
+    <script async src="https://www.tiktok.com/embed.js"></script>
     <script>
+        const tracklist = [
+            "https://www.youtube.com/embed/4oE8VfB9PjQ", // Krank
+            "https://www.youtube.com/embed/0b0sjLiEsnY"  // Ego
+        ];
+        let currentIdx = Math.floor(Math.random() * tracklist.length);
+
         function startSite() {
             document.getElementById('overlay').style.opacity = "0";
             setTimeout(() => { document.getElementById('overlay').remove(); }, 800);
-            
-            // Fixed music logic with full permissions
-            const songs = [
-                "https://open.spotify.com/embed/track/6vddKOUj2Fx4LEAYxmsT8p", 
-                "https://open.spotify.com/embed/track/0b0sjLiEsnYORnOFB7ewUj"
-            ];
-            const pick = songs[Math.floor(Math.random() * songs.length)];
-            
-            // Autoplay=1 is essential, but allow attributes are the key
-            document.getElementById('spotify-container').innerHTML = `
-                <iframe 
-                    src="${pick}?autoplay=1" 
-                    width="100%" 
-                    height="152" 
-                    frameBorder="0" 
-                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                    loading="lazy">
-                </iframe>`;
-            
+            loadTrack();
+            triggerGlitch();
+        }
+
+        function loadTrack() {
+            const track = tracklist[currentIdx];
+            document.getElementById('player-wrap').innerHTML = `
+                <iframe width="100%" height="80" src="${track}?autoplay=1&controls=0&modestbranding=1" 
+                frameborder="0" allow="autoplay; encrypted-media"></iframe>`;
+        }
+
+        function skipTrack() {
+            currentIdx = (currentIdx + 1) % tracklist.length;
+            loadTrack();
             triggerGlitch();
         }
 
@@ -199,11 +218,21 @@
             triggerGlitch();
             el.style.transform = "scale(2.5) rotate(90deg)";
             el.style.opacity = "0";
-            el.style.transition = "0.3s ease";
             setTimeout(() => { el.remove(); }, 300);
         }
 
         document.getElementById('aura-fill').style.width = Math.floor(Math.random() * 30 + 70) + "%";
+
+        document.addEventListener('mousemove', (e) => {
+            const trail = document.createElement('div');
+            trail.style.position = 'fixed'; trail.style.width = '8px'; trail.style.height = '8px';
+            trail.style.background = 'var(--accent)'; trail.style.borderRadius = '50%';
+            trail.style.pointerEvents = 'none'; trail.style.left = e.pageX + 'px'; trail.style.top = e.pageY + 'px';
+            trail.style.boxShadow = '0 0 10px var(--accent)'; trail.style.zIndex = '999';
+            document.body.appendChild(trail);
+            setTimeout(() => { trail.style.opacity = '0'; trail.style.transform = 'scale(0)'; trail.style.transition = '0.5s'; }, 100);
+            setTimeout(() => { trail.remove(); }, 600);
+        });
     </script>
 </body>
 </html>
