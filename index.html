@@ -13,6 +13,7 @@
             --card-radius: 20px;
             --accent: #22d3ee;
             --roblox-red: #f23f42;
+            --discord-blurple: #5865f2;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,236 +24,213 @@
             66% { background-color: #0b1a2e; --accent: #3b82f6; }
         }
 
-        /* FAST FLOATING: No lingering at top */
+        /* FAST FLYING: High speed exit to prevent sticking */
         @keyframes floatPop {
             0% { transform: translateY(110vh) scale(0.6) rotate(0deg); opacity: 0; }
             10% { opacity: 0.8; transform: translateY(100vh) scale(1); }
-            90% { opacity: 0.8; }
-            100% { transform: translateY(-30vh) scale(1.2) rotate(360deg); opacity: 0; }
+            100% { transform: translateY(-150vh) scale(1.5) rotate(720deg); opacity: 0; }
         }
 
-        @keyframes modalPop {
-            0% { transform: translate(-50%, -40%) scale(0.8); opacity: 0; }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        @keyframes notifSlide {
+            0% { transform: translate(-50%, -100px); opacity: 0; }
+            10%, 90% { transform: translate(-50%, 20px); opacity: 1; }
+            100% { transform: translate(-50%, -100px); opacity: 0; }
         }
 
-        @keyframes vhsSlice {
-            0% { clip-path: inset(0 0 0 0); transform: translateX(0); }
-            50% { clip-path: inset(30% 0 40% 0); transform: translateX(-8px); }
-            100% { clip-path: inset(0 0 0 0); transform: translateX(0); }
+        @keyframes levelUpBanner {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; filter: blur(10px); }
+            20% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; filter: blur(0px); }
+            80% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            100% { transform: translate(-50%, -150%) scale(1.5); opacity: 0; }
         }
-        
-        .vhs-active { animation: vhsSlice 0.2s steps(2) forwards; }
-        .sam-glitch-active { animation: shake 0.1s infinite; filter: invert(1) contrast(2); }
-        @keyframes shake { 0% { transform: translate(1px, 1px); } 50% { transform: translate(-1px, -1px); } }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             color: var(--text-primary);
             display: flex; flex-direction: column; align-items: center;
-            padding: 80px 20px; min-height: 100vh; overflow-x: hidden;
+            padding: 40px 20px; min-height: 100vh; overflow-x: hidden;
             animation: backgroundCycle 15s infinite alternate ease-in-out;
         }
 
-        #overlay {
-            position: fixed; inset: 0; background: #000; z-index: 9999;
-            display: flex; align-items: center; justify-content: center; cursor: pointer;
-            transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        /* NOTIFICATION */
+        .notification {
+            position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 15px;
+            padding: 12px 20px; display: flex; align-items: center; gap: 12px;
+            z-index: 9999; animation: notifSlide 6s ease-in-out forwards;
+            width: 90%; max-width: 320px;
         }
-        #overlay span { font-family: monospace; color: var(--accent); letter-spacing: 3px; font-size: 13px; text-transform: uppercase; }
 
-        /* ACHIEVEMENT MODAL */
-        #achievement-modal {
-            position: fixed; top: 50%; left: 50%; width: 260px;
-            background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(25px);
-            border: 1px solid var(--accent); border-radius: 24px;
-            padding: 20px; text-align: center; z-index: 8000;
-            display: none; box-shadow: 0 0 40px rgba(34, 211, 238, 0.2);
+        /* LEVEL UP BANNER */
+        #level-up {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            z-index: 10000; pointer-events: none; display: none; text-align: center; width: 100%;
         }
-        #achievement-modal img { width: 70px; height: 70px; margin-bottom: 12px; object-fit: contain; }
-        #achievement-modal h2 { font-size: 13px; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; }
+        .level-text { font-size: 40px; font-weight: 900; color: #fff; text-shadow: 0 0 20px var(--accent); text-transform: uppercase; }
 
         .container { width: 100%; max-width: 400px; position: relative; z-index: 10; text-align: center; }
 
-        .avatar {
-            width: 100px; height: 100px; border-radius: var(--card-radius);
-            border: 2px solid var(--accent); box-shadow: 0 0 20px var(--accent);
-            cursor: pointer; margin-bottom: 20px;
-        }
+        /* CATEGORIES */
+        .category { margin-bottom: 50px; width: 100%; text-align: center; }
+        .category-title { font-size: 10px; font-weight: 900; color: var(--accent); letter-spacing: 5px; text-transform: uppercase; margin-bottom: 20px; display: block; opacity: 0.6; }
 
-        #aura-score { font-size: 11px; font-weight: 900; color: var(--accent); letter-spacing: 2px; margin-bottom: 10px; }
+        .avatar { width: 100px; height: 100px; border-radius: var(--card-radius); border: 2px solid var(--accent); box-shadow: 0 0 20px var(--accent); cursor: pointer; margin-bottom: 20px; }
 
-        .social-chips { display: flex; gap: 12px; justify-content: center; margin: 25px 0 40px 0; }
-        .chip {
-            display: flex; align-items: center; gap: 8px; padding: 12px 20px;
-            background: var(--card-base); border: 1px solid var(--border-subtle);
-            border-radius: 100px; color: white; text-decoration: none; font-weight: 700; font-size: 13px;
-        }
-        .chip svg { width: 16px; height: 16px; fill: white; }
+        .social-chips { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        .chip { display: flex; align-items: center; gap: 8px; padding: 12px 20px; background: var(--card-base); border: 1px solid var(--border-subtle); border-radius: 100px; color: white; text-decoration: none; font-weight: 700; font-size: 12px; transition: 0.3s; }
+        .chip:hover { transform: translateY(-3px); border-color: var(--accent); }
+        .chip.discord { border-color: var(--discord-blurple); background: rgba(88, 101, 242, 0.1); }
+        .chip svg { width: 16px; height: 16px; fill: currentColor; }
         .chip img { width: 18px; height: 18px; object-fit: contain; }
 
-        .gallery {
-            display: flex; gap: 12px; overflow-x: auto; margin: 30px 0;
-            padding-bottom: 10px; scrollbar-width: none;
-        }
+        /* PHOTO GALLERY + ZOOM */
+        .gallery { display: flex; gap: 12px; overflow-x: auto; margin-bottom: 20px; padding: 10px 0; scrollbar-width: none; }
         .gallery::-webkit-scrollbar { display: none; }
-        .gallery img { min-width: 320px; height: 320px; object-fit: cover; border-radius: var(--card-radius); border: 1px solid var(--border-subtle); }
-
-        /* Music */
-        #spotify-container { background: #000; border-radius: var(--card-radius); overflow: hidden; margin-bottom: 10px; border: 1px solid var(--border-subtle); min-height: 152px; }
-        .switch-btn {
-            background: transparent; border: 1px solid var(--border-subtle);
-            color: var(--text-secondary); padding: 8px 22px; border-radius: 100px;
-            font-size: 10px; font-weight: 800; cursor: pointer; margin-bottom: 40px; letter-spacing: 1px;
+        .gallery img { 
+            min-width: 300px; height: 300px; object-fit: cover; border-radius: var(--card-radius); 
+            border: 1px solid var(--border-subtle); cursor: zoom-in; transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
+        
+        .img-zoomed {
+            position: fixed !important; top: 50% !important; left: 50% !important;
+            transform: translate(-50%, -50%) scale(1.1) !important;
+            z-index: 9000 !important; width: 90vw !important; height: auto !important;
+            max-width: 400px; box-shadow: 0 0 100px rgba(0,0,0,0.8);
+            cursor: zoom-out !important; border: 2px solid var(--accent) !important;
+        }
+        #gallery-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 8500; display: none; opacity: 0; transition: 0.4s; }
+
+        #spotify-container { background: #000; border-radius: var(--card-radius); overflow: hidden; border: 1px solid var(--border-subtle); }
 
         /* ROBLOX DISCORD STYLE CARD */
-        .roblox-bot-card {
-            background: #2b2d31; border-left: 4px solid var(--roblox-red);
-            border-radius: 8px; padding: 18px; margin-bottom: 40px; text-align: left;
-            position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-        .rb-header { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-        .rb-section { margin-bottom: 12px; }
+        .roblox-bot-card { background: #2b2d31; border-left: 4px solid var(--roblox-red); border-radius: 8px; padding: 20px; text-align: left; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+        .rb-header { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
         .rb-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
-        .rb-data { font-size: 13px; color: #dbdee1; margin-left: 24px; line-height: 1.5; }
+        .rb-data { font-size: 13px; color: #dbdee1; margin-left: 24px; margin-bottom: 12px; }
 
-        .tiktok-feed { width: 100%; border-radius: var(--card-radius); overflow: hidden; border: 1px solid var(--border-subtle); margin-bottom: 40px; background: #000; }
-
-        .aura-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
-        .aura-fill { width: 88%; height: 100%; background: var(--accent); box-shadow: 0 0 15px var(--accent); }
+        .tiktok-feed { width: 100%; border-radius: var(--card-radius); overflow: hidden; border: 1px solid var(--border-subtle); background: #000; }
 
         .icon-stream { position: fixed; inset: 0; pointer-events: none; z-index: 1500; }
-        .float-icon { position: absolute; width: 45px; height: 45px; pointer-events: auto; animation: floatPop 8s ease-out infinite; cursor: pointer; }
-        .float-icon img { width: 100%; height: 100%; pointer-events: none; }
+        .float-icon { position: absolute; width: 50px; height: 50px; pointer-events: auto; animation: floatPop 7s linear infinite; cursor: pointer; }
 
-        #sam-text { margin-top: 40px; font-size: 10px; opacity: 0.3; letter-spacing: 5px; cursor: pointer; text-transform: uppercase; }
+        #sam-text { margin-top: 60px; font-size: 9px; opacity: 0.3; letter-spacing: 5px; text-transform: uppercase; cursor: pointer; }
     </style>
 </head>
 <body id="main-body">
 
-    <div id="overlay" onclick="startSite()">
-        <span>[ INITIALIZING PORTAL ]</span>
+    <div id="gallery-overlay" onclick="closeZoom()"></div>
+
+    <div id="level-up">
+        <div style="font-size: 14px; color: var(--accent); font-weight: 800; letter-spacing: 4px;">AURA SYNCED</div>
+        <div class="level-text">LEVEL UP!</div>
     </div>
 
-    <div id="achievement-modal">
-        <img id="modal-img" src="">
-        <h2 id="modal-title">CAPTURED!</h2>
-        <p style="font-size: 11px; color: white; opacity: 0.6; margin-top: 4px;">+100 AURA SYNCED</p>
+    <div class="notification">
+        <div style="width: 30px; height: 30px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center;">🎵</div>
+        <div class="notif-text" style="font-size: 12px; font-weight: 700;">Now Playing<span style="display: block; font-size: 10px; opacity: 0.6;">Krank - Yeat</span></div>
     </div>
 
     <div class="icon-stream">
-        <div class="float-icon" style="left:10%;" onclick="capture(this, 'PENGUIN', '1995-confusedpengu.png')"><img src="1995-confusedpengu.png"></div>
-        <div class="float-icon" style="left:35%; animation-delay:3s;" onclick="capture(this, 'PEPE', '1785-pepeloading.png')"><img src="1785-pepeloading.png"></div>
-        <div class="float-icon" style="left:60%; animation-delay:5s;" onclick="capture(this, 'ALIEN', '937928-alien-yap.gif')"><img src="937928-alien-yap.gif"></div>
-        <div class="float-icon" style="left:85%; animation-delay:7s;" onclick="capture(this, 'FISH', '734879-fishspinning.gif')"><img src="734879-fishspinning.gif"></div>
+        <div class="float-icon" style="left:10%;" onclick="levelUp(this)"><img src="1995-confusedpengu.png" width="100%"></div>
+        <div class="float-icon" style="left:35%; animation-delay:2s;" onclick="levelUp(this)"><img src="1785-pepeloading.png" width="100%"></div>
+        <div class="float-icon" style="left:60%; animation-delay:4s;" onclick="levelUp(this)"><img src="937928-alien-yap.gif" width="100%"></div>
+        <div class="float-icon" style="left:85%; animation-delay:6s;" onclick="levelUp(this)"><img src="734879-fishspinning.gif" width="100%"></div>
     </div>
 
-    <div class="container" id="content-container">
-        <img src="Untitled design.png" class="avatar" onclick="triggerSamGlitch()">
-        <h1>John™</h1>
-        <div id="aura-score">AURA: 0</div>
-        <div style="color:var(--text-secondary); font-size: 12px; margin: 8px 0 20px 0;">London Uk 🇬🇧</div>
+    <div class="container">
+        <img src="Untitled design.png" class="avatar" onclick="triggerGlitch()">
+        <h1 style="font-weight: 900; font-size: 26px;">John™</h1>
+        <p style="color:var(--text-secondary); font-size: 12px; margin-top: 5px;">LONDON_NODE // 🇬🇧</p>
 
-        <div class="social-chips">
-            <a href="https://www.tiktok.com/@neoztar" class="chip" target="_blank">
-                <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.03 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.9-.32-1.98-.23-2.81.33-.85.51-1.28 1.43-1.35 2.4-.04.41.01.82.17 1.2.3.74.82 1.34 1.54 1.63.76.34 1.53.3 2.3.03.8-.25 1.45-.79 1.84-1.53.24-.48.35-.98.35-1.51V.02z"/></svg>
-                TikTok
-            </a>
-            <a href="https://www.roblox.com/users/8593516066/profile" class="chip" target="_blank">
-                <img src="1000035284-fotor-bg-remover-20260504165235.png">
-                Roblox
-            </a>
-        </div>
-
-        <div class="gallery">
-            <img src="LRM_20260424_121848.jpg">
-            <img src="LRM_20260424_121524.jpg">
-            <img src="LRM_20260424_121122.jpg">
-            <img src="LRM_20260424_122043.jpg">
-        </div>
-
-        <div id="spotify-container"></div>
-        <button class="switch-btn" onclick="switchSong()">SWITCH SONG ⏭️</button>
-
-        <div class="roblox-bot-card">
-            <div class="rb-header"><span>👽</span> Profile: John</div>
-            <div class="rb-section">
-                <div class="rb-title"><span>🤓</span> Identity</div>
-                <div class="rb-data">Handle: @pokkiexx3</div>
-                <div class="rb-data">ID: 8593516066</div>
-            </div>
-            <div class="rb-section">
-                <div class="rb-title"><span>🐬</span> Socials</div>
-                <div class="rb-data">Friends: 96</div>
-                <div class="rb-data">Followers: 32</div>
-                <div class="rb-data">Following: 8</div>
-            </div>
-            <div class="rb-section">
-                <div class="rb-title"><span>🐸</span> History</div>
-                <div class="rb-data">Joined: 06/02/2025</div>
-            </div>
-            <div class="rb-section">
-                <div class="rb-title"><span>📝</span> Bio</div>
-                <div class="rb-data">hey am john tm second account hacked with 1k followers ✌️😭🥀</div>
+        <div class="category" style="margin-top: 40px;">
+            <span class="category-title">Audio Stream</span>
+            <div id="spotify-container">
+                <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/6vddKOUj2Fx4LEAYxmsT8p?autoplay=1?autoplay=1" width="100%" height="152" frameBorder="0" allow="autoplay; encrypted-media"></iframe>
             </div>
         </div>
 
-        <div class="tiktok-feed">
-            <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@neoztar" data-unique-id="neoztar" data-embed-type="creator"> <section> <a target="_blank" href="https://www.tiktok.com/@neoztar">@neoztar</a> </section> </blockquote>
+        <div class="category">
+            <span class="category-title">Roblox Profile</span>
+            <div class="roblox-bot-card">
+                <div class="rb-header"><span>👽</span> Profile: John</div>
+                <div class="rb-section">
+                    <div class="rb-title"><span>🤓</span> Identity</div>
+                    <div class="rb-data">@pokkiexx3 // 8593516066</div>
+                </div>
+                <div class="rb-section">
+                    <div class="rb-title"><span>🐬</span> Socials</div>
+                    <div class="rb-data">Friends: 96 | Followers: 32</div>
+                </div>
+                <div class="rb-section">
+                    <div class="rb-title"><span>📝</span> Bio</div>
+                    <div class="rb-data" style="font-style: italic; font-size: 11px; color: #a1a1aa;">"hey am john tm second account hacked with 1k followers ✌️😭🥀"</div>
+                </div>
+            </div>
         </div>
 
-        <div class="aura-bar"><div class="aura-fill"></div></div>
-        <div id="sam-text" onclick="triggerSamGlitch()">sam is cool asf</div>
+        <div class="category">
+            <span class="category-title">Connect & Socials</span>
+            <div class="social-chips">
+                <a href="https://www.tiktok.com/@neoztar" class="chip" target="_blank">
+                    <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.03 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.9-.32-1.98-.23-2.81.33-.85.51-1.28 1.43-1.35 2.4-.04.41.01.82.17 1.2.3.74.82 1.34 1.54 1.63.76.34 1.53.3 2.3.03.8-.25 1.45-.79 1.84-1.53.24-.48.35-.98.35-1.51V.02z"/></svg>
+                    TikTok
+                </a>
+                <a href="https://discord.gg/EqJT7Yx58" class="chip discord" target="_blank">
+                    <svg viewBox="0 0 127.14 96.36"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.71,32.65-1.82,56.6.48,80.1a105.73,105.73,0,0,0,32.22,16.26,77.7,77.7,0,0,0,7.34-11.97,68.52,68.52,0,0,1-11.85-5.67c.97-.69,1.94-1.43,2.87-2.19a74.13,74.13,0,0,0,64.24,0c.93.76,1.9,1.51,2.87,2.19a68.4,68.4,0,0,1-11.85,5.67,77.08,77.08,0,0,0,7.34,11.97,105.32,105.32,0,0,0,32.22-16.26C129.58,50.78,124.73,27.2,107.7,8.07ZM42.45,65.69c-6.22,0-11.41-5.71-11.41-12.73s5.01-12.73,11.41-12.73,11.44,5.71,11.44,12.73S48.67,65.69,42.45,65.69Zm42.24,0c-6.22,0-11.41-5.71-11.41-12.73s5.01-12.73,11.41-12.73,11.44,5.71,11.44,12.73S84.69,65.69,84.69,65.69Z"/></svg>
+                    Discord Server
+                </a>
+                <a href="https://www.roblox.com/users/8593516066/profile" class="chip" target="_blank">
+                    <img src="1000035284-fotor-bg-remover-20260504165235.png"> Roblox
+                </a>
+            </div>
+        </div>
+
+        <div class="category">
+            <span class="category-title">Photos & Feed</span>
+            <div class="gallery">
+                <img src="LRM_20260424_121848.jpg" onclick="zoomImg(this)">
+                <img src="LRM_20260424_121524.jpg" onclick="zoomImg(this)">
+                <img src="LRM_20260424_121122.jpg" onclick="zoomImg(this)">
+                <img src="LRM_20260424_122043.jpg" onclick="zoomImg(this)">
+            </div>
+            <div class="tiktok-feed">
+                <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@neoztar" data-unique-id="neoztar" data-embed-type="creator"> <section> <a target="_blank" href="https://www.tiktok.com/@neoztar">@neoztar</a> </section> </blockquote>
+            </div>
+        </div>
+
+        <div id="sam-text" onclick="triggerGlitch()">sam is cool asf</div>
     </div>
 
     <script async src="https://www.tiktok.com/embed.js"></script>
     <script>
-        let aura = 0;
-        const songs = [
-            "https://open.spotify.com/embed/track/0b0sjLiEsnyORNOfB7ewUj", // Ego
-            "https://open.spotify.com/embed/track/6vddKOUj2Fx4LEAYxmsT8p"  // Krank
-        ];
-        let currentIdx = 0;
-
-        function startSite() {
-            document.getElementById('overlay').style.opacity = "0";
-            setTimeout(() => document.getElementById('overlay').remove(), 600);
-            loadSong(0); // Autoplay Ego on start
+        function zoomImg(img) {
+            const overlay = document.getElementById('gallery-overlay');
+            overlay.style.display = 'block';
+            setTimeout(() => overlay.style.opacity = '1', 10);
+            img.classList.add('img-zoomed');
         }
 
-        function loadSong(idx) {
-            document.getElementById('spotify-container').innerHTML = `
-                <iframe style="border-radius:12px" src="${songs[idx]}?autoplay=1" 
-                width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>`;
+        function closeZoom() {
+            const zoomed = document.querySelector('.img-zoomed');
+            const overlay = document.getElementById('gallery-overlay');
+            if (zoomed) zoomed.classList.remove('img-zoomed');
+            overlay.style.opacity = '0';
+            setTimeout(() => overlay.style.display = 'none', 400);
         }
 
-        function switchSong() {
-            const container = document.getElementById('content-container');
-            container.classList.add('vhs-active');
-            setTimeout(() => container.classList.remove('vhs-active'), 250);
-
-            currentIdx = (currentIdx + 1) % songs.length;
-            loadSong(currentIdx);
-        }
-
-        function capture(el, name, src) {
-            aura += 100;
-            document.getElementById('aura-score').innerText = "AURA: " + aura;
-            
-            const modal = document.getElementById('achievement-modal');
-            document.getElementById('modal-img').src = src;
-            document.getElementById('modal-title').innerText = `${name} CAPTURED!`;
-            modal.style.display = 'block';
-            modal.style.animation = 'modalPop 0.4s ease-out forwards';
-            
-            setTimeout(() => { modal.style.display = 'none'; }, 1800);
+        function levelUp(el) {
+            triggerGlitch();
+            const banner = document.getElementById('level-up');
+            banner.style.display = 'block';
+            banner.style.animation = 'levelUpBanner 1.5s ease-out forwards';
+            setTimeout(() => { banner.style.display = 'none'; }, 1500);
             el.remove();
         }
 
-        function triggerSamGlitch() {
-            document.body.classList.add('sam-glitch-active');
-            setTimeout(() => document.body.classList.remove('sam-glitch-active'), 800);
+        function triggerGlitch() {
+            document.body.style.filter = "invert(1) contrast(2)";
+            setTimeout(() => { document.body.style.filter = "none"; }, 400);
         }
     </script>
 </body>
