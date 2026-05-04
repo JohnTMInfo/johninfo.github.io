@@ -8,8 +8,8 @@
         :root {
             --text-primary: #f8f8f8;
             --text-secondary: #a1a1aa;
-            --card-base: rgba(16, 16, 16, 0.6);
-            --border-subtle: rgba(255, 255, 255, 0.1);
+            --card-base: rgba(8, 8, 8, 0.75);
+            --border-subtle: rgba(255, 255, 255, 0.15);
             --card-radius: 20px;
             --accent: #22d3ee;
             --roblox-red: #f23f42;
@@ -19,9 +19,9 @@
 
         .scanlines::after {
             content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
-            z-index: 2000; background-size: 100% 4px, 3px 100%; pointer-events: none;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.04));
+            z-index: 2000; background-size: 100% 6px, 3px 100%; pointer-events: none;
         }
 
         @keyframes backgroundCycle {
@@ -38,8 +38,8 @@
 
         @keyframes floatText {
             0% { transform: translate(0, 0); opacity: 0; }
-            20% { opacity: 0.4; }
-            80% { opacity: 0.4; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.8; }
             100% { transform: translate(20px, -100px); opacity: 0; }
         }
 
@@ -59,69 +59,116 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             color: var(--text-primary);
             display: flex; flex-direction: column; align-items: center;
-            padding: 40px 20px; min-height: 100vh; overflow-x: hidden;
+            padding: 50px 20px; min-height: 100vh; overflow-x: hidden;
             animation: backgroundCycle 15s infinite alternate ease-in-out;
         }
 
+        /* LOGIN SCREEN */
+        #login-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px);
+            z-index: 10000; display: flex; align-items: center; justify-content: center; flex-direction: column;
+        }
+        .login-box {
+            background: var(--card-base); border: 2px solid var(--accent); border-radius: var(--card-radius);
+            padding: 30px; text-align: center; box-shadow: 0 0 40px rgba(34, 211, 238, 0.3); width: 90%; max-width: 320px;
+        }
+        .login-box h2 { font-size: 16px; color: var(--accent); margin-bottom: 20px; letter-spacing: 2px; text-transform: uppercase; }
+        .login-box input {
+            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-subtle);
+            background: rgba(0,0,0,0.5); color: #fff; font-size: 14px; text-align: center; margin-bottom: 20px; outline: none;
+        }
+        .login-box input:focus { border-color: var(--accent); box-shadow: 0 0 10px var(--accent); }
+        .login-box button {
+            background: var(--accent); color: #000; font-weight: 900; font-size: 14px; padding: 12px 30px;
+            border: none; border-radius: 8px; cursor: pointer; transition: 0.3s; width: 100%;
+        }
+        .login-box button:hover { background: #fff; box-shadow: 0 0 20px #fff; }
+
         .notification {
             position: fixed; top: 0; left: 50%; transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 15px;
+            background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 15px;
             padding: 12px 20px; display: flex; align-items: center; gap: 12px;
-            z-index: 9999; display: none; width: 90%; max-width: 320px; cursor: pointer;
+            z-index: 9999; display: none; width: 90%; max-width: 320px; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         .notif-active { display: flex; animation: notifSlide 5s ease-in-out forwards; }
-        .notif-icon { width: 32px; height: 32px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .notif-icon { width: 32px; height: 32px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 0 15px var(--accent); }
 
         #achievement-modal {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 280px;
             background: rgba(10, 10, 10, 0.95); border: 1px solid var(--accent); border-radius: 24px;
-            padding: 20px; text-align: center; z-index: 8000; display: none;
+            padding: 20px; text-align: center; z-index: 8000; display: none; box-shadow: 0 0 50px rgba(34, 211, 238, 0.4);
         }
         #achievement-modal img { width: 80px; height: 80px; margin-bottom: 12px; border-radius: 12px; }
 
-        #zoom-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.9);
-            z-index: 9500; display: none; align-items: center; justify-content: center; cursor: zoom-out;
+        #zoom-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9500; display: none; align-items: center; justify-content: center; }
+        #zoomed-img { max-width: 85%; max-height: 80%; border-radius: 20px; border: 2px solid var(--accent); box-shadow: 0 0 40px rgba(0,0,0,0.8); user-select: none; }
+        .nav-btn {
+            position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: var(--accent); border: 2px solid var(--accent);
+            width: 45px; height: 45px; border-radius: 50%; font-size: 20px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(34, 211, 238, 0.4); transition: 0.2s;
         }
-        #zoomed-img { max-width: 90%; max-height: 80%; border-radius: 20px; border: 2px solid var(--accent); }
+        .nav-btn:hover { background: var(--accent); color: #000; scale: 1.1; }
+        #nav-left { left: 15px; }
+        #nav-right { right: 15px; }
 
         .container { width: 100%; max-width: 400px; position: relative; z-index: 10; text-align: center; }
         
-        .avatar { width: 100px; height: 100px; border-radius: var(--card-radius); border: 2px solid var(--accent); box-shadow: 0 0 20px var(--accent); margin-bottom: 15px; cursor: pointer; }
+        .avatar { width: 105px; height: 105px; border-radius: var(--card-radius); border: 3px solid var(--accent); box-shadow: 0 0 30px var(--accent), 0 0 60px rgba(34, 211, 238, 0.3); margin-bottom: 15px; cursor: pointer; transition: 0.3s; }
+        .avatar:hover { transform: scale(1.05); }
 
         .location-tag { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 14px; color: var(--text-secondary); margin-bottom: 10px; }
 
-        .social-chips { display: flex; gap: 12px; justify-content: center; margin-bottom: 30px; }
-        .chip { display: flex; align-items: center; gap: 8px; padding: 10px 20px; background: var(--card-base); border: 1px solid var(--border-subtle); border-radius: 100px; color: white; text-decoration: none; font-weight: 700; font-size: 13px; }
+        .social-chips { display: flex; gap: 12px; justify-content: center; margin-bottom: 40px; }
+        .chip { display: flex; align-items: center; gap: 8px; padding: 10px 20px; background: var(--card-base); border: 1px solid var(--border-subtle); border-radius: 100px; color: white; text-decoration: none; font-weight: 700; font-size: 13px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: 0.3s; }
+        .chip:hover { border-color: var(--accent); box-shadow: 0 0 15px var(--accent); transform: translateY(-2px); }
         .chip svg { width: 16px; height: 16px; fill: white; }
 
         .category-label { font-size: 10px; font-weight: 900; color: var(--accent); letter-spacing: 4px; text-transform: uppercase; margin: 40px 0 15px 0; display: block; opacity: 0.6; }
 
-        .gallery { display: flex; gap: 12px; overflow-x: auto; margin-bottom: 20px; padding: 15px 0; scrollbar-width: none; }
-        .gallery img { min-width: 280px; height: 280px; object-fit: cover; border-radius: var(--card-radius); border: 1px solid var(--border-subtle); cursor: zoom-in; }
+        .gallery { display: flex; gap: 12px; overflow-x: auto; margin-bottom: 30px; padding: 15px 0; scrollbar-width: none; }
+        .gallery img { min-width: 280px; height: 280px; object-fit: cover; border-radius: var(--card-radius); border: 1px solid var(--border-subtle); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
+        .gallery img:active { transform: scale(1.1); z-index: 100; position: relative; }
 
-        #spotify-container { background: #000; border-radius: var(--card-radius); overflow: hidden; min-height: 152px; border: 1px solid var(--border-subtle); }
+        #spotify-container { background: #000; border-radius: var(--card-radius); overflow: hidden; min-height: 152px; border: 1px solid var(--border-subtle); margin-bottom: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
 
-        .roblox-bot-card { background: #2b2d31; border-left: 4px solid var(--roblox-red); border-radius: 8px; padding: 20px; text-align: left; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .roblox-bot-card { background: #2b2d31; border-left: 4px solid var(--roblox-red); border-radius: 8px; padding: 20px; text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.7); margin-bottom: 30px; }
         .rb-header { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
         .rb-section { margin-bottom: 12px; }
         .rb-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
         .rb-data { font-size: 13px; color: #dbdee1; margin-left: 24px; line-height: 1.5; }
 
-        .tiktok-feed-box { width: 100%; border-radius: var(--card-radius); overflow: hidden; background: #000; border: 1px solid var(--border-subtle); }
+        .tiktok-feed-box { width: 100%; border-radius: var(--card-radius); overflow: hidden; background: #000; border: 1px solid var(--border-subtle); box-shadow: 0 8px 25px rgba(0,0,0,0.5); margin-bottom: 30px;}
+
+        .leaderboard-card { background: var(--card-base); border: 1px solid var(--border-subtle); border-radius: var(--card-radius); padding: 20px; width: 100%; box-shadow: 0 8px 25px rgba(0,0,0,0.5); text-align: left; }
+        .lb-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-subtle); font-size: 14px; font-weight: 700; color: #fff; }
+        .lb-row:last-child { border-bottom: none; }
+        .lb-rank { color: var(--accent); width: 30px; font-weight: 900; }
+        .lb-name { flex: 1; opacity: 0.9; }
+        .lb-score { color: var(--accent); text-shadow: 0 0 10px var(--accent); }
+        .lb-me { background: rgba(34, 211, 238, 0.15); border-radius: 10px; padding: 12px; margin: 0 -10px; border: 1px solid rgba(34, 211, 238, 0.4); display: flex; width: calc(100% + 20px); box-shadow: 0 0 20px rgba(34, 211, 238, 0.1); }
 
         .icon-stream, .text-stream { position: fixed; inset: 0; pointer-events: none; z-index: 1500; }
         .float-icon { position: absolute; width: 50px; height: 50px; pointer-events: auto; animation: floatPop 7s linear infinite; cursor: pointer; }
-        .floating-text { position: absolute; font-size: 10px; font-weight: 800; color: var(--accent); white-space: nowrap; animation: floatText 4s ease-out forwards; pointer-events: none; }
+        .floating-text { position: absolute; font-family: 'Courier New', Courier, monospace; font-size: 13px; font-weight: bold; color: var(--accent); white-space: nowrap; animation: floatText 4s ease-out forwards; pointer-events: none; text-shadow: 0 0 5px var(--accent), 0 0 15px var(--accent); }
 
-        #sam-text { margin-top: 60px; font-size: 10px; opacity: 0.3; letter-spacing: 5px; cursor: pointer; text-transform: uppercase; }
+        #sam-text { margin-top: 40px; font-size: 10px; opacity: 0; letter-spacing: 5px; cursor: pointer; text-transform: uppercase; transition: 0.4s; }
+        #sam-text:hover { opacity: 0.5; }
     </style>
 </head>
 <body id="main-body" class="scanlines">
 
-    <div id="zoom-overlay" onclick="this.style.display='none'">
-        <img id="zoomed-img" src="">
+    <div id="login-overlay">
+        <div class="login-box">
+            <h2>Enter Identity</h2>
+            <input type="text" id="username-input" placeholder="Your username..." maxlength="15">
+            <button onclick="saveIdentity()">SYNC DATA</button>
+        </div>
+    </div>
+
+    <div id="zoom-overlay" onclick="closeZoom(event)">
+        <button id="nav-left" class="nav-btn" onclick="changeSlide(-1, event)">❮</button>
+        <img id="zoomed-img" src="" onclick="event.stopPropagation()">
+        <button id="nav-right" class="nav-btn" onclick="changeSlide(1, event)">❯</button>
     </div>
 
     <div class="notification" id="notif-music">
@@ -136,8 +183,8 @@
 
     <div id="achievement-modal">
         <img id="modal-img" src="">
-        <h2 style="font-size: 14px; color: var(--accent); margin-bottom: 5px;">CAPTURED!</h2>
-        <p style="font-size: 11px; color: white; opacity: 0.7;">+100 AURA SYNCED</p>
+        <h2 style="font-size: 16px; color: var(--accent); margin-bottom: 5px; text-shadow: 0 0 10px var(--accent);">CAPTURED!</h2>
+        <p style="font-size: 12px; color: white; opacity: 0.8;" id="modal-aura-text">+100 AURA SYNCED</p>
     </div>
 
     <div class="icon-stream" id="icon-stream"></div>
@@ -145,14 +192,14 @@
 
     <div class="container">
         <img src="Untitled design.png" class="avatar" onclick="triggerGlitch()">
-        <h1>John™</h1>
+        <h1 style="font-weight: 900; letter-spacing: -1px; text-shadow: 0 0 15px rgba(255,255,255,0.3);">John™</h1>
         
         <div class="location-tag">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
             London Uk 🇬🇧
         </div>
 
-        <div id="aura-score" style="margin-bottom: 15px; font-size: 11px; font-weight: 800; color: var(--accent);">AURA: 0</div>
+        <div id="aura-score" style="margin-bottom: 20px; font-size: 13px; font-weight: 900; color: var(--accent); text-shadow: 0 0 10px var(--accent);">AURA: 0</div>
 
         <div class="social-chips">
             <a href="https://www.tiktok.com/@neoztar" class="chip" target="_blank">
@@ -162,11 +209,6 @@
             <a href="https://www.roblox.com/users/8593516066/profile" class="chip" target="_blank">
                 <img src="1000035284-fotor-bg-remover-20260504165235.png" width="18"> Roblox
             </a>
-        </div>
-
-        <span class="category-label">My favorite song</span>
-        <div id="spotify-container">
-            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/2Ssk6L9IitKSTz3fI9EshS?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
         </div>
 
         <span class="category-label">Roblox Profile</span>
@@ -182,17 +224,26 @@
                 <div class="rb-data">Friends: 96 | Followers: 32</div>
             </div>
             <div class="rb-section">
+                <div class="rb-title"><span>🐸</span> History</div>
+                <div class="rb-data">Joined: 06/02/2025</div>
+            </div>
+            <div class="rb-section">
                 <div class="rb-title"><span>📝</span> Bio</div>
                 <div class="rb-data" style="font-style: italic; font-size: 12px;">hey am john tm second account hacked with 1k followers ✌️😭🥀</div>
             </div>
         </div>
 
+        <span class="category-label">My favorite song</span>
+        <div id="spotify-container">
+            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/25sN9i2V4Knv2r4H4LtsNn?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+        </div>
+
         <span class="category-label">Gallery</span>
-        <div class="gallery">
-            <img src="LRM_20260424_121848.jpg" onclick="zoom(this)">
-            <img src="LRM_20260424_121524.jpg" onclick="zoom(this)">
-            <img src="LRM_20260424_121122.jpg" onclick="zoom(this)">
-            <img src="LRM_20260424_122043.jpg" onclick="zoom(this)">
+        <div class="gallery" id="photo-gallery">
+            <img src="LRM_20260424_121848.jpg" onclick="openGallery(this)">
+            <img src="LRM_20260424_121524.jpg" onclick="openGallery(this)">
+            <img src="LRM_20260424_121122.jpg" onclick="openGallery(this)">
+            <img src="LRM_20260424_122043.jpg" onclick="openGallery(this)">
         </div>
 
         <span class="category-label">TikTok Feed</span>
@@ -200,16 +251,65 @@
             <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@neoztar" data-unique-id="neoztar" data-embed-type="creator"> <section> <a target="_blank" href="https://www.tiktok.com/@neoztar">@neoztar</a> </section> </blockquote>
         </div>
 
+        <span class="category-label">Aura Leaderboard</span>
+        <div class="leaderboard-card">
+            <div class="lb-row"><span class="lb-rank">#1</span><span class="lb-name">Neoztar</span><span class="lb-score">99,900</span></div>
+            <div class="lb-row"><span class="lb-rank">#2</span><span class="lb-name">Dudeami</span><span class="lb-score">50,200</span></div>
+            <div class="lb-row"><span class="lb-rank">#3</span><span class="lb-name">Sam</span><span class="lb-score">10,000</span></div>
+            <div class="lb-row" style="margin-top: 5px;">
+                <div class="lb-me">
+                    <span class="lb-rank">#?</span><span class="lb-name" id="lb-my-name">Guest</span><span class="lb-score" id="lb-my-score">0</span>
+                </div>
+            </div>
+        </div>
+
         <div id="sam-text" onclick="triggerGlitch()">sam is cool asf</div>
     </div>
 
     <script async src="https://www.tiktok.com/embed.js"></script>
     <script>
-        let aura = 0;
+        // LOAD DATA FROM BROWSER STORAGE
+        let myUsername = localStorage.getItem('john_username');
+        let aura = localStorage.getItem('john_aura') ? parseInt(localStorage.getItem('john_aura')) : 0;
+        
         const iconImages = ['1995-confusedpengu.png', '1785-pepeloading.png', '937928-alien-yap.gif', '734879-fishspinning.gif'];
         const randomTexts = ['my best friends are you', 'i love teen titans and am lowkey cool', 'Dudeami'];
+        
+        let galleryImages = [];
+        let currentSlide = 0;
 
         window.onload = function() {
+            // Check if user has an identity saved
+            if (!myUsername) {
+                document.getElementById('login-overlay').style.display = 'flex';
+            } else {
+                initSite();
+            }
+            
+            const imgs = document.querySelectorAll('#photo-gallery img');
+            imgs.forEach(img => galleryImages.push(img.src));
+        };
+
+        function saveIdentity() {
+            const input = document.getElementById('username-input').value.trim();
+            if (input === "") return;
+            
+            myUsername = input;
+            localStorage.setItem('john_username', myUsername);
+            document.getElementById('login-overlay').style.display = 'none';
+            initSite();
+        }
+
+        function initSite() {
+            // Hide login modal just in case
+            document.getElementById('login-overlay').style.display = 'none';
+
+            // Update UI with saved data
+            document.getElementById('aura-score').innerText = "AURA: " + aura;
+            document.getElementById('lb-my-name').innerText = myUsername + " (You)";
+            document.getElementById('lb-my-score').innerText = aura.toLocaleString();
+
+            // Trigger Notifications
             const mNotif = document.getElementById('notif-music');
             mNotif.classList.add('notif-active');
             setTimeout(() => {
@@ -218,9 +318,10 @@
                 dNotif.classList.add('notif-active');
             }, 6000);
             
+            // Start Spawners
             setInterval(spawnIcon, 2500);
-            setInterval(spawnText, 3000);
-        };
+            setInterval(spawnText, 3500);
+        }
 
         function spawnIcon() {
             const stream = document.getElementById('icon-stream');
@@ -246,18 +347,40 @@
             setTimeout(() => { el.remove(); }, 4000);
         }
 
-        function zoom(el) {
-            const overlay = document.getElementById('zoom-overlay');
-            const img = document.getElementById('zoomed-img');
-            img.src = el.src;
-            overlay.style.display = 'flex';
+        function openGallery(el) {
+            currentSlide = galleryImages.indexOf(el.src);
+            document.getElementById('zoomed-img').src = galleryImages[currentSlide];
+            document.getElementById('zoom-overlay').style.display = 'flex';
+        }
+
+        function changeSlide(direction, event) {
+            event.stopPropagation();
+            currentSlide += direction;
+            if (currentSlide < 0) currentSlide = galleryImages.length - 1;
+            if (currentSlide >= galleryImages.length) currentSlide = 0;
+            document.getElementById('zoomed-img').src = galleryImages[currentSlide];
+        }
+
+        function closeZoom(event) {
+            if (event.target.id === 'zoom-overlay') {
+                document.getElementById('zoom-overlay').style.display = 'none';
+            }
         }
 
         function capture(el, name, src) {
+            // Add Aura
             aura += 100;
+            
+            // Save to Local Storage immediately
+            localStorage.setItem('john_aura', aura);
+            
+            // Update UI
             document.getElementById('aura-score').innerText = "AURA: " + aura;
+            document.getElementById('lb-my-score').innerText = aura.toLocaleString();
+
             const modal = document.getElementById('achievement-modal');
             document.getElementById('modal-img').src = src;
+            document.getElementById('modal-aura-text').innerText = "+100 AURA FOR " + myUsername.toUpperCase();
             modal.style.display = 'block';
             setTimeout(() => { modal.style.display = 'none'; }, 1800);
             el.remove();
