@@ -16,11 +16,10 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* VIVID 5-SECOND BACKGROUND CYCLE */
         @keyframes backgroundCycle {
             0%, 100% { background-color: #050505; }
-            33% { background-color: #240b36; } /* Vivid Purple */
-            66% { background-color: #0b2436; } /* Vivid Blue */
+            33% { background-color: #350d61; }
+            66% { background-color: #0d3561; }
         }
 
         @keyframes accentCycle {
@@ -29,17 +28,34 @@
             66% { --accent: #3b82f6; }
         }
 
-        /* SCANLINE OVERLAY */
-        body::after {
-            content: " ";
-            display: block;
-            position: fixed;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.04));
-            z-index: 100;
-            background-size: 100% 4px, 3px 100%;
-            pointer-events: none;
+        @keyframes screenShake {
+            0% { transform: translate(3px, 2px) rotate(0deg); }
+            20% { transform: translate(-4px, -3px) rotate(1deg); }
+            40% { transform: translate(-2px, 3px) rotate(-1deg); }
+            60% { transform: translate(4px, 2px) rotate(0deg); }
+            80% { transform: translate(-2px, -2px) rotate(1deg); }
+            100% { transform: translate(2px, 3px) rotate(-1deg); }
+        }
+
+        @keyframes notificationSlide {
+            0% { transform: translate(-50%, -100px); opacity: 0; }
+            10% { transform: translate(-50%, 20px); opacity: 1; }
+            90% { transform: translate(-50%, 20px); opacity: 1; }
+            100% { transform: translate(-50%, -100px); opacity: 0; }
+        }
+
+        @keyframes floatPop {
+            0% { transform: translateY(110vh) scale(0.5) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.5; transform: translateY(100vh) scale(1); }
+            100% { transform: translateY(-20vh) scale(1.4) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink { from, to { border-color: transparent } 50% { border-color: var(--accent) } }
+
+        .master-glitch {
+            animation: screenShake 0.15s infinite !important;
+            filter: invert(1) hue-rotate(180deg) contrast(3) blur(1px) !important;
         }
 
         body {
@@ -51,16 +67,21 @@
             padding: 80px 20px;
             min-height: 100vh;
             overflow-x: hidden;
-            animation: backgroundCycle 15s infinite alternate ease-in-out, 
-                       accentCycle 15s infinite alternate ease-in-out;
+            animation: backgroundCycle 5s infinite alternate ease-in-out, 
+                       accentCycle 5s infinite alternate ease-in-out;
+            transition: background-color 0.5s ease;
         }
 
-        /* NOTIFICATION */
-        @keyframes notificationSlide {
-            0% { transform: translate(-50%, -100px); opacity: 0; }
-            10% { transform: translate(-50%, 20px); opacity: 1; }
-            90% { transform: translate(-50%, 20px); opacity: 1; }
-            100% { transform: translate(-50%, -100px); opacity: 0; }
+        body::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.05));
+            z-index: 100;
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
         }
 
         #music-notification {
@@ -74,57 +95,43 @@
 
         .notif-icon { width: 35px; height: 35px; border-radius: 8px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 18px; transition: 0.5s; }
 
-        /* FLOATING ICONS */
         .icon-stream { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
         .float-icon { position: absolute; width: 35px; height: 35px; opacity: 0; animation: floatPop 12s ease-out infinite; }
         .float-icon img { width: 100%; height: 100%; object-fit: contain; }
-
-        @keyframes floatPop {
-            0% { transform: translateY(110vh) scale(0.5) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.5; transform: translateY(100vh) scale(1); }
-            100% { transform: translateY(-20vh) scale(1.4) rotate(360deg); opacity: 0; }
-        }
 
         .icon-1 { left: 10%; animation-delay: 0s; }
         .icon-2 { left: 30%; animation-delay: 3s; }
         .icon-3 { left: 55%; animation-delay: 6s; }
         .icon-4 { left: 80%; animation-delay: 9s; }
 
-        .container { width: 100%; max-width: 400px; position: relative; z-index: 10; animation: fadeUp 1s ease-out forwards; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .container { width: 100%; max-width: 400px; position: relative; z-index: 10; }
 
         .avatar {
-            width: 90px; height: 90px; border-radius: var(--card-radius); object-fit: cover;
-            margin-bottom: 16px; border: 2px solid var(--accent); box-shadow: 0 0 20px var(--accent);
+            width: 95px; height: 95px; border-radius: var(--card-radius); object-fit: cover;
+            margin-bottom: 16px; border: 2px solid var(--accent); box-shadow: 0 0 25px var(--accent);
             transition: 0.5s ease;
         }
 
         h1 { font-size: 38px; font-weight: 900; letter-spacing: -1.5px; margin-bottom: 4px; }
 
-        /* TYPEWRITER BIO */
         .bio { 
             color: var(--text-secondary); margin-bottom: 24px; font-size: 16px; width: fit-content;
             overflow: hidden; border-right: 2px solid var(--accent); white-space: nowrap;
             letter-spacing: 0.5px; animation: typing 3s steps(30, end), blink .75s step-end infinite;
         }
 
-        @keyframes typing { from { width: 0 } to { width: 100% } }
-        @keyframes blink { from, to { border-color: transparent } 50% { border-color: var(--accent) } }
-
-        /* SOCIAL CHIPS */
         .social-chips { display: flex; gap: 12px; margin-bottom: 40px; }
         .chip {
-            display: flex; align-items: center; gap: 8px; padding: 10px 18px;
+            display: flex; align-items: center; gap: 10px; padding: 12px 20px;
             background: var(--card-base); border: 1px solid var(--border-subtle);
             border-radius: 100px; color: var(--text-primary); text-decoration: none;
-            font-size: 14px; font-weight: 600; transition: 0.3s; backdrop-filter: blur(10px);
+            font-size: 14px; font-weight: 700; transition: 0.3s; backdrop-filter: blur(10px);
         }
         .chip:hover { border-color: var(--accent); background: rgba(255, 255, 255, 0.05); transform: translateY(-2px); }
         .chip svg { width: 18px; height: 18px; fill: currentColor; }
 
         .section-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.2em; color: var(--text-secondary); margin-bottom: 16px; display: block; opacity: 0.6; }
 
-        /* SCROLLABLE GALLERY */
         .gallery {
             display: flex; gap: 12px; overflow-x: auto; margin-bottom: 40px;
             padding-bottom: 10px; scroll-snap-type: x mandatory; scrollbar-width: none;
@@ -133,21 +140,24 @@
         .gallery img {
             min-width: 320px; height: 320px; object-fit: cover;
             border-radius: var(--card-radius); border: 1px solid var(--border-subtle);
-            scroll-snap-align: center;
+            scroll-snap-align: center; transition: 0.3s;
         }
 
-        /* MUSIC CARD */
         .music-card { background: #000; border-radius: 20px; overflow: hidden; border: 1px solid var(--border-subtle); margin-bottom: 40px; transition: 0.3s; }
-        .music-card:hover { border-color: var(--accent); }
 
-        .counter { margin-top: 20px; text-align: center; opacity: 0.6; }
+        #sam-text {
+            margin-top: 60px; font-size: 12px; color: var(--text-secondary);
+            text-transform: uppercase; letter-spacing: 5px; cursor: pointer;
+            user-select: none; transition: 0.3s; text-align: center;
+        }
+        #sam-text:hover { color: var(--accent); text-shadow: 0 0 10px var(--accent); }
     </style>
 </head>
-<body>
+<body id="main-body">
 
     <div id="music-notification">
         <div class="notif-icon">🎵</div>
-        <div class="notif-text">Now Playing<span id="now-playing-title">Loading vibe...</span></div>
+        <div class="notif-text">Now Playing<span id="now-playing-title">...</span></div>
     </div>
 
     <div class="icon-stream">
@@ -161,7 +171,7 @@
         <div class="profile-header">
             <img src="Untitled design.png" class="avatar">
             <h1>John™</h1>
-            <p class="bio">just a guy on the internet vibing.</p>
+            <div class="bio">just a guy on the internet vibing.</div>
             
             <div class="social-chips">
                 <a href="https://www.tiktok.com/@neoztar" target="_blank" class="chip">
@@ -169,42 +179,48 @@
                     TikTok
                 </a>
                 <a href="https://www.roblox.com/users/8593516066/profile" target="_blank" class="chip">
-                    <svg viewBox="0 0 100 100"><rect x="25" y="25" width="50" height="50" transform="rotate(15 50 50)" fill="white"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M19.333 14.667l-4.14 1.49-1.49-4.14 4.14-1.49 1.49 4.14zM8.833 9l4.14-1.49 1.49 4.14-4.14 1.49-1.49-4.14zM5 1L2.667 7.468l6.468 2.338L11.473 3.338 5 1zM18.112 14.32l2.338-6.468-6.468-2.338-2.338 6.468 6.468 2.338zM2.667 14.32l2.338 6.468 6.468-2.338-2.338-6.468-6.468 2.338zM15.98 1L9.512 3.338l2.338 6.468 6.468-2.338L15.98 1z" fill="white"/></svg>
                     Roblox
                 </a>
             </div>
         </div>
 
-        <span class="section-label">// PHOTOS ➡️</span>
+        <span class="section-label">PHOTOS ➡️</span>
         <div class="gallery">
             <img src="LRM_20260424_121848.jpg">
             <img src="LRM_20260424_121524.jpg">
             <img src="LRM_20260424_121122.jpg">
         </div>
 
-        <span class="section-label">// NOW PLAYING</span>
-        <div class="music-card" id="spotify-container">
-            </div>
+        <span class="section-label">NOW PLAYING</span>
+        <div class="music-card" id="spotify-container"></div>
 
-        <div class="counter">
-            <span class="section-label" style="margin-bottom: 8px;">TOTAL VIEWS</span>
-            <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fjohn-tm-profile.github.io&count_bg=%2322D3EE&title_bg=%2318181B&icon=&icon_color=%23E7E7E7&title=views&edge_flat=false" alt="Hits">
-        </div>
+        <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fjohn-tm-profile.github.io&count_bg=%2322D3EE&title_bg=%2318181B&icon=&icon_color=%23E7E7E7&title=views&edge_flat=false" alt="Hits">
+
+        <div id="sam-text" onclick="triggerSamGlitch()">sam is lowkey cool asf</div>
     </div>
 
     <script>
         const songs = [
-            { url: "https://open.spotify.com/embed/track/25Y8e0tV6nS47H1fWlY1U4", title: "2hollis" },
-            { url: "https://open.spotify.com/embed/track/4jXAtV7UqM5vW0yV6F7X5w", title: "Yeat" }
+            { id: "0b0sjLiEsnYORnOFB7ewUj", title: "2hollis" },
+            { id: "4oE8VfB9PjQYxU7G0N1jQo", title: "Yeat" }
         ];
-
         const randomSong = songs[Math.floor(Math.random() * songs.length)];
         
         document.getElementById('spotify-container').innerHTML = `
-            <iframe style="border-radius:12px" src="${randomSong.url}?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/${randomSong.id}?utm_source=generator&theme=0" 
+            width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         `;
         
         document.getElementById('now-playing-title').innerText = randomSong.title;
+
+        function triggerSamGlitch() {
+            const body = document.getElementById('main-body');
+            body.classList.add('master-glitch');
+            setTimeout(() => {
+                body.classList.remove('master-glitch');
+            }, 1000);
+        }
     </script>
 </body>
 </html>
