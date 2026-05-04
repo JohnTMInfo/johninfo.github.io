@@ -16,14 +16,12 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* SMOOTH BACKGROUND CYCLE (Changes every 10s) */
         @keyframes backgroundCycle {
-            0%, 100% { background-color: #050505; } /* Black */
-            33% { background-color: #0d0a1a; }      /* Dark Purple */
-            66% { background-color: #0a111a; }      /* Dark Blue */
+            0%, 100% { background-color: #050505; }
+            33% { background-color: #0d0a1a; }
+            66% { background-color: #0a111a; }
         }
 
-        /* ACCENT GLOW CYCLE */
         @keyframes accentCycle {
             0%, 100% { --accent: #22d3ee; }
             33% { --accent: #9d1dfd; }
@@ -44,7 +42,6 @@
             transition: background-color 2s ease;
         }
 
-        /* Floating Icons Stream */
         .icon-stream { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
         .float-icon { position: absolute; width: 35px; height: 35px; opacity: 0; animation: floatPop 12s ease-out infinite; }
         .float-icon img { width: 100%; height: 100%; object-fit: contain; }
@@ -72,7 +69,6 @@
         h1 { font-size: 38px; font-weight: 900; letter-spacing: -1.5px; margin-bottom: 4px; }
         .bio { color: var(--text-secondary); margin-bottom: 24px; font-size: 16px; }
 
-        /* Social Chips with Icons */
         .social-chips { display: flex; gap: 12px; margin-bottom: 40px; }
         .chip {
             display: flex; align-items: center; gap: 8px; padding: 10px 18px;
@@ -132,10 +128,10 @@
 
         <span class="section-label">// NOW PLAYING</span>
         <div class="music-card">
-            <iframe style="border-radius:12px" src="https://open.spotify.com/home" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/1L9v7R3fK8SjW9LqH5O5Fp?utm_source=generator&autoplay=1" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </div>
         <div class="music-card">
-            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/...9" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/106tXp4Xp2P9P0Y9x6n0jU?utm_source=generator" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </div>
 
         <div class="counter">
