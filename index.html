@@ -22,6 +22,13 @@
             66% { background-color: #0b2436; --accent: #3b82f6; }
         }
 
+        @keyframes notificationSlide {
+            0% { transform: translate(-50%, -120px); opacity: 0; }
+            15% { transform: translate(-50%, 20px); opacity: 1; }
+            85% { transform: translate(-50%, 20px); opacity: 1; }
+            100% { transform: translate(-50%, -120px); opacity: 0; }
+        }
+
         @keyframes shake { 0% { transform: translate(1px, 1px); } 50% { transform: translate(-1px, -1px); } }
 
         @keyframes floatPop {
@@ -30,12 +37,11 @@
             100% { transform: translateY(-20vh) scale(1.4) rotate(360deg); opacity: 0; }
         }
 
-        @keyframes iconExplode {
-            0% { transform: scale(1) rotate(0); opacity: 1; }
-            100% { transform: scale(3) rotate(720deg); opacity: 0; }
+        /* Sam Glitch Effect Class */
+        .master-glitch { 
+            filter: invert(1) hue-rotate(180deg) contrast(3) !important; 
+            animation: shake 0.1s infinite !important; 
         }
-
-        .master-glitch { filter: invert(1) hue-rotate(180deg) contrast(3); animation: shake 0.1s infinite; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -56,6 +62,22 @@
                         linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.05));
             z-index: 100; background-size: 100% 4px, 3px 100%; pointer-events: none;
         }
+
+        /* Notifications */
+        .notification {
+            position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 350px; background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 18px; padding: 12px 16px; display: flex; align-items: center;
+            gap: 12px; z-index: 1000; opacity: 0; text-decoration: none; color: white;
+        }
+
+        #music-notif { animation: notificationSlide 6s ease-in-out 1s forwards; }
+        #discord-notif { animation: notificationSlide 6s ease-in-out 8s forwards; }
+
+        .notif-icon { width: 35px; height: 35px; border-radius: 8px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .notif-text { font-size: 13px; font-weight: 600; }
+        .notif-text span { display: block; color: var(--text-secondary); font-size: 11px; }
 
         .trail {
             position: fixed; width: 8px; height: 8px; background: var(--accent);
@@ -114,15 +136,21 @@
         .crt-toggle { position: fixed; bottom: 20px; left: 20px; padding: 10px; background: var(--card-base); border: 1px solid var(--accent); border-radius: 100px; color: var(--accent); font-size: 10px; z-index: 1001; }
 
         .icon-stream { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
-        .float-icon { 
-            position: absolute; width: 35px; height: 35px; opacity: 0; 
-            animation: floatPop 12s ease-out infinite; pointer-events: auto; cursor: pointer;
-        }
+        .float-icon { position: absolute; width: 35px; height: 35px; opacity: 0; animation: floatPop 12s ease-out infinite; cursor: pointer; pointer-events: auto; }
         .float-icon img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
-        .icon-popped { animation: iconExplode 0.5s forwards !important; }
     </style>
 </head>
 <body id="main-body" class="scanlines">
+
+    <div class="notification" id="music-notif">
+        <div class="notif-icon">🎵</div>
+        <div class="notif-text">Now Playing<span id="notif-track">...</span></div>
+    </div>
+
+    <a href="https://discord.gg/bdfZ49ASS" target="_blank" class="notification" id="discord-notif">
+        <div class="notif-icon">💬</div>
+        <div class="notif-text">join this server !!<span>discord.gg/bdfZ49ASS</span></div>
+    </a>
 
     <div class="icon-stream">
         <div class="float-icon" style="left:10%; animation-delay:0s;" onclick="iconPop(this)"><img src="1995-confusedpengu.png"></div>
@@ -146,7 +174,7 @@
                 TikTok
             </a>
             <a href="https://www.roblox.com/users/8593516066/profile" class="chip">
-                <svg viewBox="0 0 24 24"><path d="M18.826 15.632l-4.14 1.49-1.49-4.14 4.14-1.49 1.49 4.14zM8.56 10.458l4.14-1.49 1.49 4.14-4.14 1.49-1.49-4.14zM4.694 2.086L2.356 8.554l6.468 2.338 2.338-6.468-6.468-2.338zm13.112 13.32l2.338-6.468-6.468-2.338-2.338 6.468 6.468 2.338zM2.356 15.406l2.338 6.468 6.468-2.338-2.338-6.468-6.468 2.338zm13.32-13.112l-6.468 2.338 2.338 6.468 6.468-2.338-2.338-6.468z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M18.574 15.652l-4.14 1.49-1.49-4.14 4.14-1.49 1.49 4.14zM4.444 2.106L2.106 8.574l6.468 2.338 2.338-6.468-6.468-2.338zm13.112 13.32l2.338-6.468-6.468-2.338-2.338 6.468 6.468 2.338zM2.106 15.426l2.338 6.468 6.468-2.338-2.338-6.468-6.468 2.338zm13.32-13.112l-6.468 2.338 2.338 6.468 6.468-2.338-2.338-6.468z"/></svg>
                 Roblox
             </a>
         </div>
@@ -162,6 +190,13 @@
         <span style="font-size: 11px; letter-spacing: 2px; opacity: 0.5; font-weight: 800;">NOW PLAYING</span>
         <div id="spotify-container" style="background:#000; border-radius:20px; overflow:hidden; margin-top: 15px; margin-bottom:40px;"></div>
 
+        <span style="font-size: 11px; letter-spacing: 2px; opacity: 0.5; font-weight: 800;">LATEST TIKTOKS ➡️</span>
+        <div class="tiktok-feed">
+            <div class="tiktok-video">
+                <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@neoztar" data-unique-id="neoztar" data-embed-type="creator"> <section> <a target="_blank" href="https://www.tiktok.com/@neoztar">@neoztar</a> </section> </blockquote>
+            </div>
+        </div>
+
         <div class="stats-card">
             <div class="stats-header">🛸 ROBLOX_STATS</div>
             <div class="stat-item"><span class="stat-label">Profile:</span> John</div>
@@ -173,13 +208,6 @@
             <div class="stat-item"><span class="stat-label">Following:</span> 8</div>
             <div class="stats-divider"></div>
             <div class="stat-item"><span class="stat-label">History:</span> Joined 06/02/2025</div>
-        </div>
-
-        <span style="font-size: 11px; letter-spacing: 2px; opacity: 0.5; font-weight: 800;">LATEST TIKTOKS ➡️</span>
-        <div class="tiktok-feed">
-            <div class="tiktok-video">
-                <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@neoztar" data-unique-id="neoztar" data-embed-type="creator"> <section> <a target="_blank" href="https://www.tiktok.com/@neoztar">@neoztar</a> </section> </blockquote>
-            </div>
         </div>
 
         <div class="aura-wrap">
@@ -199,4 +227,44 @@
             trail.className = 'trail';
             trail.style.left = e.pageX + 'px'; trail.style.top = e.pageY + 'px';
             document.body.appendChild(trail);
-            setTimeout(() => { trail.style.opacity = '
+            setTimeout(() => { trail.style.opacity = '0'; trail.style.transform = 'scale(0)'; }, 100);
+            setTimeout(() => { trail.remove(); }, 600);
+        });
+
+        function toggleCRT() {
+            document.body.classList.toggle('scanlines');
+            document.querySelector('.crt-toggle').innerText = document.body.classList.contains('scanlines') ? "CRT: ON" : "CRT: OFF";
+        }
+
+        function triggerGlitch() {
+            document.body.classList.add('master-glitch');
+            setTimeout(() => { document.body.classList.remove('master-glitch'); }, 1000);
+        }
+
+        function iconPop(el) {
+            triggerGlitch();
+            el.style.transform = "scale(2) rotate(45deg)";
+            el.style.opacity = "0";
+            setTimeout(() => { el.remove(); }, 300);
+        }
+
+        let taps = 0;
+        function checkSecret() {
+            taps++;
+            if(taps === 5) {
+                document.body.innerHTML = "<h1 style='color:lime; font-family:monospace; padding:50px; text-align:center;'>SYSTEM REBOOTING...</h1>";
+                setTimeout(() => { location.reload(); }, 2000);
+            }
+            setTimeout(() => { taps = 0; }, 2000);
+        }
+
+        const songs = [
+            {id: "4oE8VfB9PjQYxU7G0N1jQo", t: "Krank - Yeat"},
+            {id: "0b0sjLiEsnYORnOFB7ewUj", t: "you once said my name - 2hollis"}
+        ];
+        const pick = songs[Math.floor(Math.random() * songs.length)];
+        document.getElementById('spotify-container').innerHTML = `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/4oE8VfB9PjQYxU7G0N1jQo?utm_source=generator0{pick.id}?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+        document.getElementById('notif-track').innerText = pick.t;
+    </script>
+</body>
+</html>
