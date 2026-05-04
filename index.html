@@ -78,7 +78,6 @@
 
         #zoom-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9500; display: none; align-items: center; justify-content: center; }
         #zoomed-img { max-width: 85%; max-height: 80%; border-radius: 20px; border: 2px solid var(--accent); }
-        
         .nav-btn {
             position: absolute; top: 50%; transform: translateY(-50%);
             background: transparent; color: var(--accent); border: 1px solid rgba(34, 211, 238, 0.2);
@@ -104,27 +103,13 @@
         .gallery { display: flex; gap: 12px; overflow-x: auto; margin-bottom: 30px; padding: 10px 0; scrollbar-width: none; }
         .gallery img { min-width: 280px; height: 280px; object-fit: cover; border-radius: var(--card-radius); border: 1px solid var(--border-subtle); cursor: zoom-in; }
 
-        /* NEON AUDIO PLAYER */
         .audio-player {
-            background: var(--card-base);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--card-radius);
-            padding: 20px;
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            text-align: left;
+            background: var(--card-base); border: 1px solid var(--border-subtle); border-radius: var(--card-radius);
+            padding: 20px; margin-bottom: 30px; display: flex; align-items: center; gap: 15px; text-align: left;
         }
         .play-btn {
-            width: 45px; height: 45px;
-            border-radius: 50%;
-            background: var(--accent);
-            border: none;
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0;
-            box-shadow: 0 0 15px var(--accent);
+            width: 45px; height: 45px; border-radius: 50%; background: var(--accent); border: none;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 0 15px var(--accent);
         }
         .song-info { flex: 1; }
         .song-title { font-size: 14px; font-weight: 900; color: #fff; margin-bottom: 4px; }
@@ -140,13 +125,10 @@
 
         .leaderboard-card { background: var(--card-base); border: 1px solid var(--border-subtle); border-radius: var(--card-radius); padding: 20px; width: 100%; box-shadow: 0 8px 25px rgba(0,0,0,0.5); text-align: left; }
         .lb-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-subtle); font-size: 14px; font-weight: 700; color: #fff; }
-        .lb-rank { color: var(--accent); width: 30px; font-weight: 900; }
-        .lb-name { flex: 1; opacity: 0.9; }
-        .lb-score { color: var(--accent); }
         .lb-me { background: rgba(34, 211, 238, 0.15); border-radius: 10px; padding: 12px; margin: 0 -10px; border: 1px solid rgba(34, 211, 238, 0.4); display: flex; width: calc(100% + 20px); }
 
         .sync-card { background: var(--card-base); border: 1px solid var(--border-subtle); border-radius: 15px; padding: 15px; margin-top: 15px; margin-bottom: 40px; display: flex; gap: 10px; width: 100%; }
-        .sync-card input { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border-subtle); background: rgba(0,0,0,0.5); color: #fff; font-size: 13px; outline: none; font-weight: bold; }
+        .sync-card input { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border-subtle); background: rgba(0,0,0,0.5); color: #fff; font-size: 13px; outline: none; }
         .sync-card button { background: var(--accent); color: #000; font-weight: 900; font-size: 11px; padding: 0 15px; border: none; border-radius: 8px; cursor: pointer; }
 
         .icon-stream, .text-stream { position: fixed; inset: 0; pointer-events: none; z-index: 1500; }
@@ -166,7 +148,12 @@
 
     <div class="notification" id="notif-music">
         <div class="notif-icon">🎵</div>
-        <div style="font-size: 12px; font-weight: 700;">Audio Driver<span style="display: block; font-size: 10px; opacity: 0.6;">Local File Active</span></div>
+        <div style="font-size: 12px; font-weight: 700;">Now Playing<span style="display: block; font-size: 10px; opacity: 0.6;">play my favourite song</span></div>
+    </div>
+
+    <div class="notification" id="notif-discord" onclick="window.open('https://discord.gg/EqJT7Yx58', '_blank')">
+        <div class="notif-icon" style="background: #5865F2;">💬</div>
+        <div style="font-size: 12px; font-weight: 700;">Discord Server<span style="display: block; font-size: 10px; opacity: 0.6;">Click here to join us!</span></div>
     </div>
 
     <div id="achievement-modal">
@@ -194,11 +181,6 @@
             <a href="https://www.roblox.com/users/8593516066/profile" class="chip" target="_blank"><img src="1000035284-fotor-bg-remover-20260504165235.png" width="18">Roblox</a>
         </div>
 
-        <span class="category-label">TIKTOK FYP</span>
-        <div class="tiktok-feed-box">
-            <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@neoztar" data-unique-id="neoztar" data-embed-type="creator"><section><a target="_blank" href="https://www.tiktok.com/@neoztar">@neoztar</a></section></blockquote>
-        </div>
-
         <span class="category-label">MY PHOTOS</span>
         <div class="gallery" id="photo-gallery">
             <img src="LRM_20260424_121848.jpg" onclick="openGallery(this)">
@@ -214,14 +196,15 @@
                 <svg id="pauseIcon" style="display:none" width="20" height="20" viewBox="0 0 24 24" fill="black"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
             </button>
             <div class="song-info">
-                <div class="song-title">Krank</div>
-                <div class="song-artist">Yeat</div>
+                <div class="song-title">song</div>
+                <div class="song-artist">cool boi</div>
             </div>
             <audio id="myAudio" loop>
                 <source src="snaptik_7566297191250152717_v3.mp4" type="audio/mp4">
             </audio>
         </div>
 
+        <span class="category-label">MY ROBLOX DETAILS</span>
         <div class="roblox-bot-card">
             <div class="rb-header"><span>👽</span> Profile: John</div>
             <div class="rb-section">
@@ -242,7 +225,12 @@
             </div>
         </div>
 
-        <span class="category-label">AURA STATS</span>
+        <span class="category-label">TIKTOK FYP</span>
+        <div class="tiktok-feed-box">
+            <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@neoztar" data-unique-id="neoztar" data-embed-type="creator"><section><a target="_blank" href="https://www.tiktok.com/@neoztar">@neoztar</a></section></blockquote>
+        </div>
+
+        <span class="category-label">AURA STARS</span>
         <div class="leaderboard-card">
             <div class="lb-row">
                 <div class="lb-me"><span class="lb-rank">#1</span><span class="lb-name" id="lb-my-name">Guest</span><span class="lb-score" id="lb-my-score">0</span></div>
@@ -265,30 +253,31 @@
         const randomTexts = ['my best friends are you', 'i love teen titans and am lowkey cool', 'Dudeami'];
         let galleryImages = []; let currentSlide = 0;
 
-        // MUSIC LOGIC
         const audio = document.getElementById('myAudio');
         const playBtn = document.getElementById('playToggle');
         const playIcon = document.getElementById('playIcon');
         const pauseIcon = document.getElementById('pauseIcon');
 
         playBtn.addEventListener('click', () => {
-            if (audio.paused) {
-                audio.play();
-                playIcon.style.display = 'none';
-                pauseIcon.style.display = 'block';
-            } else {
-                audio.pause();
-                playIcon.style.display = 'block';
-                pauseIcon.style.display = 'none';
-            }
+            if (audio.paused) { audio.play(); playIcon.style.display = 'none'; pauseIcon.style.display = 'block'; }
+            else { audio.pause(); playIcon.style.display = 'block'; pauseIcon.style.display = 'none'; }
         });
+
+        function triggerDiscordNotif() {
+            const dNotif = document.getElementById('notif-discord');
+            dNotif.classList.add('notif-active');
+            setTimeout(() => { dNotif.classList.remove('notif-active'); }, 5000);
+        }
 
         window.onload = function() {
             document.getElementById('username-input').value = myUsername;
             updateUI();
+            
             const mNotif = document.getElementById('notif-music');
             mNotif.classList.add('notif-active');
-            setTimeout(() => { mNotif.classList.remove('notif-active'); }, 5000);
+            setTimeout(() => { mNotif.classList.remove('notif-active'); triggerDiscordNotif(); }, 6000);
+
+            setInterval(triggerDiscordNotif, 30000);
             setInterval(spawnIcon, 2500); setInterval(spawnText, 3500);
             document.querySelectorAll('#photo-gallery img').forEach(img => galleryImages.push(img.src));
         };
@@ -296,12 +285,9 @@
         function saveIdentity() {
             const input = document.getElementById('username-input').value.trim();
             if (input === "") return;
-            myUsername = input;
-            localStorage.setItem('john_username', myUsername);
-            updateUI();
+            myUsername = input; localStorage.setItem('john_username', myUsername); updateUI();
             const btn = document.querySelector('.sync-card button');
-            btn.innerText = "SAVED!";
-            setTimeout(() => btn.innerText = "SYNC", 1500);
+            btn.innerText = "SAVED!"; setTimeout(() => btn.innerText = "SYNC", 1500);
         }
 
         function updateUI() {
@@ -353,7 +339,8 @@
             aura += 100; localStorage.setItem('john_aura', aura); updateUI();
             const modal = document.getElementById('achievement-modal');
             document.getElementById('modal-img').src = src;
-            document.getElementById('modal-aura-text').innerText = "+100 AURA FOR " + (myUsername || "GUEST").toUpperCase();
+            const displayName = myUsername ? myUsername.toUpperCase() : "GUEST";
+            document.getElementById('modal-aura-text').innerText = "+100 AURA FOR " + displayName;
             modal.style.display = 'block'; setTimeout(() => { modal.style.display = 'none'; }, 1800);
             el.remove();
         }
