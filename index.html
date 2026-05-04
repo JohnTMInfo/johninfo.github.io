@@ -37,6 +37,11 @@
             100% { transform: translateY(-20vh) scale(1.4) rotate(360deg); opacity: 0; }
         }
 
+        @keyframes iconExplode {
+            0% { transform: scale(1) rotate(0); opacity: 1; }
+            100% { transform: scale(3) rotate(720deg); opacity: 0; }
+        }
+
         /* Sam Glitch Effect Class */
         .master-glitch { 
             filter: invert(1) hue-rotate(180deg) contrast(3) !important; 
@@ -49,7 +54,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 80px 20px;
+            padding: 120px 20px;
             min-height: 100vh;
             overflow-x: hidden;
             animation: backgroundCycle 15s infinite alternate ease-in-out;
@@ -123,7 +128,7 @@
             border-radius: var(--card-radius); padding: 20px; margin-bottom: 40px;
             text-align: left; position: relative; backdrop-filter: blur(10px);
         }
-        .stats-header { color: var(--accent); font-weight: 800; font-size: 12px; margin-bottom: 15px; }
+        .stats-header { color: var(--accent); font-weight: 800; font-size: 12px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
         .stat-item { margin-bottom: 8px; font-size: 14px; }
         .stat-label { color: var(--text-secondary); font-weight: 600; margin-right: 5px; }
         .stats-divider { height: 1px; background: var(--border-subtle); margin: 12px 0; }
@@ -174,7 +179,7 @@
                 TikTok
             </a>
             <a href="https://www.roblox.com/users/8593516066/profile" class="chip">
-                <svg viewBox="0 0 24 24"><path d="M18.574 15.652l-4.14 1.49-1.49-4.14 4.14-1.49 1.49 4.14zM4.444 2.106L2.106 8.574l6.468 2.338 2.338-6.468-6.468-2.338zm13.112 13.32l2.338-6.468-6.468-2.338-2.338 6.468 6.468 2.338zM2.106 15.426l2.338 6.468 6.468-2.338-2.338-6.468-6.468 2.338zm13.32-13.112l-6.468 2.338 2.338 6.468 6.468-2.338-2.338-6.468z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M18.826 15.632l-4.14 1.49-1.49-4.14 4.14-1.49 1.49 4.14zM8.56 10.458l4.14-1.49 1.49 4.14-4.14 1.49-1.49-4.14zM4.694 2.086L2.356 8.554l6.468 2.338 2.338-6.468-6.468-2.338zm13.112 13.32l2.338-6.468-6.468-2.338-2.338 6.468 6.468 2.338zM2.356 15.406l2.338 6.468 6.468-2.338-2.338-6.468-6.468 2.338zm13.32-13.112l-6.468 2.338 2.338 6.468 6.468-2.338-2.338-6.468z"/></svg>
                 Roblox
             </a>
         </div>
@@ -187,18 +192,10 @@
             <img src="LRM_20260424_122043.jpg">
         </div>
 
-        <span style="font-size: 11px; letter-spacing: 2px; opacity: 0.5; font-weight: 800;">NOW PLAYING</span>
-        <div id="spotify-container" style="background:#000; border-radius:20px; overflow:hidden; margin-top: 15px; margin-bottom:40px;"></div>
-
-        <span style="font-size: 11px; letter-spacing: 2px; opacity: 0.5; font-weight: 800;">LATEST TIKTOKS ➡️</span>
-        <div class="tiktok-feed">
-            <div class="tiktok-video">
-                <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@neoztar" data-unique-id="neoztar" data-embed-type="creator"> <section> <a target="_blank" href="https://www.tiktok.com/@neoztar">@neoztar</a> </section> </blockquote>
-            </div>
-        </div>
+        <div id="spotify-container" style="background:#000; border-radius:20px; overflow:hidden; margin-bottom:40px;"></div>
 
         <div class="stats-card">
-            <div class="stats-header">🛸 ROBLOX_STATS</div>
+            <div class="stats-header">🛸 ROBLOX_INFO</div>
             <div class="stat-item"><span class="stat-label">Profile:</span> John</div>
             <div class="stat-item"><span class="stat-label">Handle:</span> @pokkiexx3</div>
             <div class="stat-item"><span class="stat-label">ID:</span> 8593516066</div>
@@ -208,6 +205,13 @@
             <div class="stat-item"><span class="stat-label">Following:</span> 8</div>
             <div class="stats-divider"></div>
             <div class="stat-item"><span class="stat-label">History:</span> Joined 06/02/2025</div>
+        </div>
+
+        <span style="font-size: 11px; letter-spacing: 2px; opacity: 0.5; font-weight: 800;">LATEST TIKTOKS ➡️</span>
+        <div class="tiktok-feed">
+            <div class="tiktok-video">
+                <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@neoztar" data-unique-id="neoztar" data-embed-type="creator"> <section> <a target="_blank" href="https://www.tiktok.com/@neoztar">@neoztar</a> </section> </blockquote>
+            </div>
         </div>
 
         <div class="aura-wrap">
@@ -236,16 +240,10 @@
             document.querySelector('.crt-toggle').innerText = document.body.classList.contains('scanlines') ? "CRT: ON" : "CRT: OFF";
         }
 
-        function triggerGlitch() {
-            document.body.classList.add('master-glitch');
-            setTimeout(() => { document.body.classList.remove('master-glitch'); }, 1000);
-        }
-
         function iconPop(el) {
             triggerGlitch();
-            el.style.transform = "scale(2) rotate(45deg)";
-            el.style.opacity = "0";
-            setTimeout(() => { el.remove(); }, 300);
+            el.classList.add('icon-popped');
+            setTimeout(() => { el.remove(); }, 500);
         }
 
         let taps = 0;
@@ -259,12 +257,19 @@
         }
 
         const songs = [
-            {id: "4oE8VfB9PjQYxU7G0N1jQo", t: "Krank - Yeat"},
-            {id: "0b0sjLiEsnYORnOFB7ewUj", t: "you once said my name - 2hollis"}
+            {id: "https://open.spotify.com/embed/track/6UCl6S77fR869894e668ba4328574768393e", t: "Krank - Yeat"},
+            {id: "https://open.spotify.com/embed/track/4oE8VfB9PjQYxU7G0N1jQo7", t: "Ego - 2hollis"}
         ];
         const pick = songs[Math.floor(Math.random() * songs.length)];
-        document.getElementById('spotify-container').innerHTML = `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/4oE8VfB9PjQYxU7G0N1jQo?utm_source=generator0{pick.id}?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+        document.getElementById('spotify-container').innerHTML = `
+            <iframe style="border-radius:12px" src="${pick.id}" width="100%" height="152" 
+            frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
         document.getElementById('notif-track').innerText = pick.t;
+
+        function triggerGlitch() {
+            document.body.classList.add('master-glitch');
+            setTimeout(() => { document.body.classList.remove('master-glitch'); }, 1000);
+        }
     </script>
 </body>
 </html>
