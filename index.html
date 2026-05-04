@@ -18,8 +18,8 @@
 
         @keyframes backgroundCycle {
             0%, 100% { background-color: #050505; }
-            33% { background-color: #0d0a1a; }
-            66% { background-color: #0a111a; }
+            33% { background-color: #1a0b2e; }
+            66% { background-color: #0b1a2e; }
         }
 
         @keyframes accentCycle {
@@ -28,18 +28,62 @@
             66% { --accent: #3b82f6; }
         }
 
+        /* Phone Notification Animation */
+        @keyframes notificationSlide {
+            0% { transform: translate(-50%, -100px); opacity: 0; }
+            10% { transform: translate(-50%, 20px); opacity: 1; }
+            90% { transform: translate(-50%, 20px); opacity: 1; }
+            100% { transform: translate(-50%, -100px); opacity: 0; }
+        }
+
+        #music-notification {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 350px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 18px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            animation: notificationSlide 6s ease-in-out 2s forwards; /* Starts after 2 seconds */
+        }
+
+        .notif-icon { width: 35px; height: 35px; border-radius: 8px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .notif-text { font-size: 13px; font-weight: 500; }
+        .notif-text span { display: block; color: var(--text-secondary); font-size: 11px; }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             color: var(--text-primary);
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 60px 20px;
+            padding: 80px 20px;
             min-height: 100vh;
             overflow-x: hidden;
-            animation: backgroundCycle 30s infinite alternate ease-in-out, 
-                       accentCycle 30s infinite alternate ease-in-out;
-            transition: background-color 2s ease;
+            animation: backgroundCycle 15s infinite alternate ease-in-out, 
+                       accentCycle 15s infinite alternate ease-in-out;
+        }
+
+        body::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 100;
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
         }
 
         .icon-stream { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
@@ -67,7 +111,21 @@
         }
 
         h1 { font-size: 38px; font-weight: 900; letter-spacing: -1.5px; margin-bottom: 4px; }
-        .bio { color: var(--text-secondary); margin-bottom: 24px; font-size: 16px; }
+
+        .bio { 
+            color: var(--text-secondary); 
+            margin-bottom: 24px; 
+            font-size: 16px;
+            width: fit-content;
+            overflow: hidden;
+            border-right: 2px solid var(--accent);
+            white-space: nowrap;
+            letter-spacing: 0.5px;
+            animation: typing 3s steps(30, end), blink .75s step-end infinite;
+        }
+
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink { from, to { border-color: transparent } 50% { border-color: var(--accent) } }
 
         .social-chips { display: flex; gap: 12px; margin-bottom: 40px; }
         .chip {
@@ -93,6 +151,14 @@
 </head>
 <body>
 
+    <div id="music-notification">
+        <div class="notif-icon">🎵</div>
+        <div class="notif-text">
+            Now Playing
+            <span>2hollis / Yeat</span>
+        </div>
+    </div>
+
     <div class="icon-stream">
         <div class="float-icon icon-1"><img src="1995-confusedpengu.png"></div>
         <div class="float-icon icon-2"><img src="1785-pepeloading.png"></div>
@@ -102,7 +168,7 @@
 
     <div class="container">
         <div class="profile-header">
-            <img src="LRM_20260424_122043.jpg" class="avatar">
+            <img src="Untitled design.png" class="avatar">
             <h1>John™</h1>
             <p class="bio">just a guy on the internet vibing.</p>
             
@@ -112,7 +178,7 @@
                     TikTok
                 </a>
                 <a href="https://www.roblox.com/users/8593516066/profile" target="_blank" class="chip">
-                    <svg viewBox="0 0 24 24"><path d="M18.574 15.652l-4.14 1.49-1.49-4.14 4.14-1.49 1.49 4.14zM8.31 10.478l4.14-1.49 1.49 4.14-4.14 1.49-1.49-4.14zM4.444 2.106L2.106 8.574l6.468 2.338 2.338-6.468-6.468-2.338zm13.112 13.32l2.338-6.468-6.468-2.338-2.338 6.468 6.468 2.338zM2.106 15.426l2.338 6.468 6.468-2.338-2.338-6.468-6.468 2.338zm13.32-13.112l-6.468 2.338 2.338 6.468 6.468-2.338-2.338-6.468z"/></svg>
+                    <svg viewBox="0 0 100 100"><path d="M18.8 71.2L31.2 21.6 81.2 34.1 68.8 83.7Z" fill="white"/></svg>
                     Roblox
                 </a>
             </div>
@@ -123,15 +189,14 @@
             <img src="LRM_20260424_121848.jpg">
             <img src="LRM_20260424_121524.jpg">
             <img src="LRM_20260424_121122.jpg">
-            <img src="1777900664666.jpeg">
         </div>
 
         <span class="section-label">// NOW PLAYING</span>
         <div class="music-card">
-            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/1L9v7R3fK8SjW9LqH5O5Fp?utm_source=generator&autoplay=1" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM3M?utm_source=generator&theme=00" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </div>
         <div class="music-card">
-            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/106tXp4Xp2P9P0Y9x6n0jU?utm_source=generator" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM3M?utm_source=generator&theme=01" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </div>
 
         <div class="counter">
