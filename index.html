@@ -17,11 +17,13 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        /* SUBTLE SCANLINES */
         .scanlines::after {
             content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
                         linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
             z-index: 2000; background-size: 100% 3px, 3px 100%; pointer-events: none;
+            transition: 0.1s opacity;
         }
 
         @keyframes backgroundCycle {
@@ -36,18 +38,16 @@
             100% { transform: translateY(-150vh) scale(1.5) rotate(720deg); opacity: 0; }
         }
 
-        @keyframes floatText {
-            0% { transform: translate(0, 0); opacity: 0; }
-            20%, 80% { opacity: 0.6; }
-            100% { transform: translate(20px, -100px); opacity: 0; }
-        }
-
         @keyframes notifSlide {
             0% { transform: translate(-50%, -100px); opacity: 0; }
             15%, 85% { transform: translate(-50%, 20px); opacity: 1; }
             100% { transform: translate(-50%, -100px); opacity: 0; }
         }
 
+        /* CHAOS ENGINE EFFECTS */
+        .glitch-fragment { position: fixed; width: 40px; height: 2px; background: var(--accent); z-index: 5; pointer-events: none; opacity: 0.4; }
+        .corner-alert { position: fixed; font-family: 'Courier New', Courier, monospace; font-size: 8px; color: var(--accent); opacity: 0.6; z-index: 3000; pointer-events: none; text-transform: uppercase; }
+        @keyframes ghostFade { 0% { opacity: 0; transform: scale(0.9); } 20% { opacity: 0.6; } 80% { opacity: 0.6; } 100% { opacity: 0; transform: scale(1.1); } }
         .master-glitch { filter: invert(1) contrast(3); animation: shake 0.1s infinite; }
         @keyframes shake { 0% { transform: translate(1px, 1px); } 50% { transform: translate(-1px, -1px); } }
 
@@ -67,38 +67,22 @@
             z-index: 9999; display: none; width: 90%; max-width: 320px; cursor: pointer;
         }
         .notif-active { display: flex; animation: notifSlide 5s ease-in-out forwards; }
-        .notif-icon { width: 32px; height: 32px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
 
-        #achievement-modal {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 280px;
-            background: rgba(10, 10, 10, 0.95); border: 1px solid var(--accent); border-radius: 24px;
-            padding: 20px; text-align: center; z-index: 8000; display: none;
+        #zoom-overlay { 
+            position: fixed; inset: 0; background: rgba(0,0,0,0.9); 
+            z-index: 9500; display: none; align-items: center; justify-content: center;
+            touch-action: none;
         }
-        #achievement-modal img { width: 80px; height: 80px; margin-bottom: 12px; border-radius: 12px; }
-
-        #zoom-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9500; display: none; align-items: center; justify-content: center; }
-        #zoomed-img { max-width: 85%; max-height: 80%; border-radius: 20px; border: 2px solid var(--accent); }
-        .nav-btn {
-            position: absolute; top: 50%; transform: translateY(-50%);
-            background: transparent; color: var(--accent); border: 1px solid rgba(34, 211, 238, 0.2);
-            width: 50px; height: 50px; border-radius: 50%; font-size: 24px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; transition: 0.3s;
-        }
-        .nav-btn:hover { border-color: var(--accent); background: rgba(34, 211, 238, 0.1); }
-        #nav-left { left: 10px; }
-        #nav-right { right: 10px; }
+        #zoomed-img { max-width: 85%; max-height: 80%; border-radius: 20px; border: 2px solid var(--accent); transition: transform 0.2s; }
 
         .container { width: 100%; max-width: 400px; position: relative; z-index: 10; text-align: center; }
-        
-        .avatar { width: 100px; height: 100px; border-radius: var(--card-radius); border: 2px solid var(--accent); box-shadow: 0 0 20px var(--accent); margin-bottom: 15px; cursor: pointer; }
-
+        .avatar { width: 100px; height: 100px; border-radius: var(--card-radius); border: 2px solid var(--accent); margin-bottom: 15px; cursor: pointer; transition: 0.3s; }
         .location-tag { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 14px; color: var(--text-secondary); margin-bottom: 10px; }
-
-        .social-chips { display: flex; gap: 12px; justify-content: center; margin-bottom: 30px; }
-        .chip { display: flex; align-items: center; gap: 8px; padding: 10px 20px; background: var(--card-base); border: 1px solid var(--border-subtle); border-radius: 100px; color: white; text-decoration: none; font-weight: 700; font-size: 13px; }
-        .chip svg { width: 16px; height: 16px; fill: white; }
-
         .category-label { font-size: 10px; font-weight: 900; color: var(--accent); letter-spacing: 4px; text-transform: uppercase; margin: 40px 0 15px 0; display: block; opacity: 0.6; }
+
+        .social-chips { display: flex; gap: 12px; justify-content: center; margin-bottom: 40px; }
+        .chip { display: flex; align-items: center; gap: 8px; padding: 10px 20px; background: var(--card-base); border: 1px solid var(--border-subtle); border-radius: 100px; color: white; text-decoration: none; font-weight: 700; font-size: 13px; transition: 0.2s; }
+        .chip:hover { border-color: var(--accent); transform: translateY(-2px); }
 
         .gallery { display: flex; gap: 12px; overflow-x: auto; margin-bottom: 30px; padding: 10px 0; scrollbar-width: none; }
         .gallery img { min-width: 280px; height: 280px; object-fit: cover; border-radius: var(--card-radius); border: 1px solid var(--border-subtle); cursor: zoom-in; }
@@ -107,78 +91,49 @@
             background: var(--card-base); border: 1px solid var(--border-subtle); border-radius: var(--card-radius);
             padding: 20px; margin-bottom: 30px; display: flex; align-items: center; gap: 15px; text-align: left;
         }
-        .play-btn {
-            width: 45px; height: 45px; border-radius: 50%; background: var(--accent); border: none;
-            cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 0 15px var(--accent);
-        }
-        .song-info { flex: 1; }
-        .song-title { font-size: 14px; font-weight: 900; color: #fff; margin-bottom: 4px; }
-        .song-artist { font-size: 12px; color: var(--accent); opacity: 0.8; }
+        .play-btn { width: 45px; height: 45px; border-radius: 50%; background: var(--accent); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 0 15px var(--accent); }
 
-        .roblox-bot-card { background: #2b2d31; border-left: 4px solid var(--roblox-red); border-radius: 8px; padding: 20px; text-align: left; box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 30px; }
-        .rb-header { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-        .rb-section { margin-bottom: 12px; }
-        .rb-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+        .roblox-bot-card { background: #2b2d31; border-left: 4px solid var(--roblox-red); border-radius: 8px; padding: 20px; text-align: left; margin-bottom: 30px; }
         .rb-data { font-size: 13px; color: #dbdee1; margin-left: 24px; line-height: 1.5; }
 
         .tiktok-feed-box { width: 100%; border-radius: var(--card-radius); overflow: hidden; background: #000; border: 1px solid var(--border-subtle); margin-bottom: 30px;}
 
         .leaderboard-card { background: var(--card-base); border: 1px solid var(--border-subtle); border-radius: var(--card-radius); padding: 20px; width: 100%; box-shadow: 0 8px 25px rgba(0,0,0,0.5); text-align: left; }
-        .lb-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-subtle); font-size: 14px; font-weight: 700; color: #fff; }
         .lb-me { background: rgba(34, 211, 238, 0.15); border-radius: 10px; padding: 12px; margin: 0 -10px; border: 1px solid rgba(34, 211, 238, 0.4); display: flex; width: calc(100% + 20px); }
 
         .sync-card { background: var(--card-base); border: 1px solid var(--border-subtle); border-radius: 15px; padding: 15px; margin-top: 15px; margin-bottom: 40px; display: flex; gap: 10px; width: 100%; }
         .sync-card input { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border-subtle); background: rgba(0,0,0,0.5); color: #fff; font-size: 13px; outline: none; }
         .sync-card button { background: var(--accent); color: #000; font-weight: 900; font-size: 11px; padding: 0 15px; border: none; border-radius: 8px; cursor: pointer; }
 
-        .icon-stream, .text-stream { position: fixed; inset: 0; pointer-events: none; z-index: 1500; }
+        .icon-stream { position: fixed; inset: 0; pointer-events: none; z-index: 1500; }
         .float-icon { position: absolute; width: 50px; height: 50px; pointer-events: auto; animation: floatPop 7s linear infinite; cursor: pointer; }
-        .floating-text { position: absolute; font-family: 'Courier New', Courier, monospace; font-size: 12px; font-weight: bold; color: var(--accent); white-space: nowrap; animation: floatText 4s ease-out forwards; pointer-events: none; text-shadow: 1px 1px 2px #000; }
-
         #sam-text { margin-bottom: 40px; font-size: 10px; opacity: 0.3; letter-spacing: 5px; cursor: pointer; text-transform: uppercase; }
     </style>
 </head>
 <body id="main-body" class="scanlines">
 
-    <div id="zoom-overlay" onclick="closeZoom(event)">
-        <button id="nav-left" class="nav-btn" onclick="changeSlide(-1, event)">❮</button>
-        <img id="zoomed-img" src="" onclick="event.stopPropagation()">
-        <button id="nav-right" class="nav-btn" onclick="changeSlide(1, event)">❯</button>
-    </div>
+    <div id="zoom-overlay"><img id="zoomed-img" src=""></div>
 
     <div class="notification" id="notif-music">
         <div class="notif-icon">🎵</div>
         <div style="font-size: 12px; font-weight: 700;">Now Playing<span style="display: block; font-size: 10px; opacity: 0.6;">play my favourite song</span></div>
     </div>
-
     <div class="notification" id="notif-discord" onclick="window.open('https://discord.gg/EqJT7Yx58', '_blank')">
         <div class="notif-icon" style="background: #5865F2;">💬</div>
         <div style="font-size: 12px; font-weight: 700;">Discord Server<span style="display: block; font-size: 10px; opacity: 0.6;">Click here to join us!</span></div>
     </div>
 
-    <div id="achievement-modal">
-        <img id="modal-img" src="">
-        <h2 style="font-size: 14px; color: var(--accent); margin-bottom: 5px;">CAPTURED!</h2>
-        <p style="font-size: 11px; color: white; opacity: 0.7;" id="modal-aura-text">+100 AURA SYNCED</p>
-    </div>
-
     <div class="icon-stream" id="icon-stream"></div>
-    <div class="text-stream" id="text-stream"></div>
 
     <div class="container">
         <img src="Untitled design.png" class="avatar" onclick="triggerGlitch()">
-        <h1 style="font-weight: 900;">John™</h1>
-        
-        <div class="location-tag">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-            London Uk 🇬🇧
-        </div>
-
+        <h1 style="font-weight: 900; letter-spacing: -2px;">John™</h1>
+        <div class="location-tag">London Uk 🇬🇧</div>
         <div id="aura-score" style="margin-bottom: 15px; font-size: 11px; font-weight: 800; color: var(--accent);">AURA: 0</div>
 
         <div class="social-chips">
-            <a href="https://www.tiktok.com/@neoztar" class="chip" target="_blank"><svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.03 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.9-.32-1.98-.23-2.81.33-.85.51-1.28 1.43-1.35 2.4-.04.41.01.82.17 1.2.3.74.82 1.34 1.54 1.63.76.34 1.53.3 2.3.03.8-.25 1.45-.79 1.84-1.53.24-.48.35-.98.35-1.51V.02z"/></svg>TikTok</a>
-            <a href="https://www.roblox.com/users/8593516066/profile" class="chip" target="_blank"><img src="1000035284-fotor-bg-remover-20260504165235.png" width="18">Roblox</a>
+            <a href="https://www.tiktok.com/@neoztar" class="chip" target="_blank">TikTok</a>
+            <a href="https://www.roblox.com/users/8593516066/profile" class="chip" target="_blank">Roblox</a>
         </div>
 
         <span class="category-label">MY PHOTOS</span>
@@ -196,45 +151,26 @@
                 <svg id="pauseIcon" style="display:none" width="20" height="20" viewBox="0 0 24 24" fill="black"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
             </button>
             <div class="song-info">
-                <div class="song-title">song</div>
-                <div class="song-artist">cool boi</div>
+                <div class="song-title">song</div><div class="song-artist">cool boi</div>
             </div>
-            <audio id="myAudio" loop>
-                <source src="snaptik_7566297191250152717_v3.mp4" type="audio/mp4">
-            </audio>
+            <audio id="myAudio" loop><source src="snaptik_7566297191250152717_v3.mp4" type="audio/mp4"></audio>
         </div>
 
         <span class="category-label">MY ROBLOX DETAILS</span>
         <div class="roblox-bot-card">
-            <div class="rb-header"><span>👽</span> Profile: John</div>
-            <div class="rb-section">
-                <div class="rb-title"><span>🤓</span> Identity</div>
-                <div class="rb-data">Handle: @pokkiexx3 | ID: 8593516066</div>
-            </div>
-            <div class="rb-section">
-                <div class="rb-title"><span>🐬</span> Socials</div>
-                <div class="rb-data">Friends: 96 | Followers: 32</div>
-            </div>
-            <div class="rb-section">
-                <div class="rb-title"><span>🐸</span> History</div>
-                <div class="rb-data">Joined: 06/02/2025</div>
-            </div>
-            <div class="rb-section">
-                <div class="rb-title"><span>📝</span> Bio</div>
-                <div class="rb-data" style="font-style: italic; font-size: 12px;">hey am john tm second account hacked with 1k followers ✌️😭🥀</div>
-            </div>
+            <div class="rb-data">Handle: @pokkiexx3 | ID: 8593516066</div>
+            <div class="rb-data">Friends: 96 | Followers: 32</div>
+            <div class="rb-data" style="font-style: italic; font-size: 11px; margin-top: 5px;">hey am john tm second account hacked with 1k followers ✌️😭🥀</div>
         </div>
 
-        <span class="category-label">TIKTOK FYP</span>
+        <span class="category-label">MY TIKTOK POSTS</span>
         <div class="tiktok-feed-box">
             <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@neoztar" data-unique-id="neoztar" data-embed-type="creator"><section><a target="_blank" href="https://www.tiktok.com/@neoztar">@neoztar</a></section></blockquote>
         </div>
 
         <span class="category-label">AURA STARS</span>
         <div class="leaderboard-card">
-            <div class="lb-row">
-                <div class="lb-me"><span class="lb-rank">#1</span><span class="lb-name" id="lb-my-name">Guest</span><span class="lb-score" id="lb-my-score">0</span></div>
-            </div>
+            <div class="lb-me"><span style="width:30px">#1</span><span id="lb-my-name" style="flex:1">Guest</span><span id="lb-my-score" style="color:var(--accent)">0</span></div>
         </div>
 
         <div class="sync-card">
@@ -250,105 +186,94 @@
         let myUsername = localStorage.getItem('john_username') || '';
         let aura = localStorage.getItem('john_aura') ? parseInt(localStorage.getItem('john_aura')) : 0;
         const iconImages = ['1995-confusedpengu.png', '1785-pepeloading.png', '937928-alien-yap.gif', '734879-fishspinning.gif'];
-        const randomTexts = ['my best friends are you', 'i love teen titans and am lowkey cool', 'Dudeami'];
         let galleryImages = []; let currentSlide = 0;
 
-        const audio = document.getElementById('myAudio');
-        const playBtn = document.getElementById('playToggle');
-        const playIcon = document.getElementById('playIcon');
-        const pauseIcon = document.getElementById('pauseIcon');
+        const chaosEvents = [
+            () => { 
+                const el = document.createElement('div'); el.className = 'corner-alert';
+                el.style.top = Math.random() * 90 + '%'; el.style.left = Math.random() * 80 + '%';
+                const msgs = ['Void_Sync_0%', 'Signal_Stable', 'User_Identified', 'Data_Leaked...', 'Aura_Critical'];
+                el.innerText = msgs[Math.floor(Math.random()*msgs.length)];
+                el.style.animation = 'ghostFade 3s forwards';
+                document.body.appendChild(el); setTimeout(() => el.remove(), 3000);
+            },
+            () => { 
+                const f = document.createElement('div'); f.className = 'glitch-fragment';
+                f.style.top = Math.random() * 100 + '%'; f.style.left = '-50px';
+                document.body.appendChild(f);
+                f.animate([{ left: '-50px' }, { left: '110vw' }], { duration: 4000, easing: 'linear' });
+                setTimeout(() => f.remove(), 4000);
+            },
+            () => { 
+                document.body.style.opacity = '0.8';
+                setTimeout(() => document.body.style.opacity = '1', 100);
+            }
+        ];
 
-        playBtn.addEventListener('click', () => {
+        let touchStartX = 0; let touchEndX = 0;
+        const overlay = document.getElementById('zoom-overlay');
+        overlay.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
+        overlay.addEventListener('touchend', e => { touchEndX = e.changedTouches[0].screenX; handleSwipe(); });
+        overlay.onclick = e => { if (e.target.id === 'zoom-overlay') overlay.style.display = 'none'; };
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) changeSlide(1);
+            if (touchEndX > touchStartX + 50) changeSlide(-1);
+        }
+
+        const audio = document.getElementById('myAudio');
+        document.getElementById('playToggle').onclick = () => {
             if (audio.paused) { audio.play(); playIcon.style.display = 'none'; pauseIcon.style.display = 'block'; }
             else { audio.pause(); playIcon.style.display = 'block'; pauseIcon.style.display = 'none'; }
-        });
-
-        function triggerDiscordNotif() {
-            const dNotif = document.getElementById('notif-discord');
-            dNotif.classList.add('notif-active');
-            setTimeout(() => { dNotif.classList.remove('notif-active'); }, 5000);
-        }
+        };
 
         window.onload = function() {
             document.getElementById('username-input').value = myUsername;
             updateUI();
-            
             const mNotif = document.getElementById('notif-music');
             mNotif.classList.add('notif-active');
             setTimeout(() => { mNotif.classList.remove('notif-active'); triggerDiscordNotif(); }, 6000);
-
             setInterval(triggerDiscordNotif, 30000);
-            setInterval(spawnIcon, 2500); setInterval(spawnText, 3500);
+            setInterval(spawnIcon, 2500);
+            setInterval(() => { chaosEvents[Math.floor(Math.random()*chaosEvents.length)](); }, 4500);
             document.querySelectorAll('#photo-gallery img').forEach(img => galleryImages.push(img.src));
         };
 
+        function triggerDiscordNotif() {
+            const dNotif = document.getElementById('notif-discord');
+            dNotif.classList.add('notif-active');
+            setTimeout(() => dNotif.classList.remove('notif-active'), 5000);
+        }
+
         function saveIdentity() {
-            const input = document.getElementById('username-input').value.trim();
-            if (input === "") return;
-            myUsername = input; localStorage.setItem('john_username', myUsername); updateUI();
+            myUsername = document.getElementById('username-input').value.trim();
+            localStorage.setItem('john_username', myUsername); updateUI();
             const btn = document.querySelector('.sync-card button');
             btn.innerText = "SAVED!"; setTimeout(() => btn.innerText = "SYNC", 1500);
         }
 
         function updateUI() {
             document.getElementById('aura-score').innerText = "AURA: " + aura;
-            document.getElementById('lb-my-name').innerText = (myUsername || "Guest") + " (You)";
+            document.getElementById('lb-my-name').innerText = (myUsername || "Guest");
             document.getElementById('lb-my-score').innerText = aura.toLocaleString();
         }
 
         function spawnIcon() {
-            const stream = document.getElementById('icon-stream');
-            const imgFile = iconImages[Math.floor(Math.random() * iconImages.length)];
             const icon = document.createElement('div');
             icon.className = 'float-icon';
             icon.style.left = Math.random() * 90 + '%';
-            icon.innerHTML = `<img src="${imgFile}" width="100%">`;
-            icon.onclick = function() { capture(this, 'SECURED', imgFile); };
-            stream.appendChild(icon);
-            setTimeout(() => { if(icon) icon.remove(); }, 8000);
+            icon.innerHTML = `<img src="${iconImages[Math.floor(Math.random()*iconImages.length)]}" width="100%">`;
+            icon.onclick = function() { aura += 100; localStorage.setItem('john_aura', aura); updateUI(); icon.remove(); };
+            document.getElementById('icon-stream').appendChild(icon);
+            setTimeout(() => icon.remove(), 8000);
         }
 
-        function spawnText() {
-            const stream = document.getElementById('text-stream');
-            const quote = randomTexts[Math.floor(Math.random() * randomTexts.length)];
-            const el = document.createElement('div');
-            el.className = 'floating-text';
-            el.style.left = Math.random() * 70 + '%'; el.style.top = Math.random() * 80 + '%';
-            el.innerText = quote;
-            stream.appendChild(el);
-            setTimeout(() => { el.remove(); }, 4000);
-        }
-
-        function openGallery(el) {
-            currentSlide = galleryImages.indexOf(el.src);
-            document.getElementById('zoomed-img').src = galleryImages[currentSlide];
-            document.getElementById('zoom-overlay').style.display = 'flex';
-        }
-
-        function changeSlide(direction, event) {
-            event.stopPropagation();
-            currentSlide += direction;
-            if (currentSlide < 0) currentSlide = galleryImages.length - 1;
-            if (currentSlide >= galleryImages.length) currentSlide = 0;
+        function openGallery(el) { currentSlide = galleryImages.indexOf(el.src); document.getElementById('zoomed-img').src = galleryImages[currentSlide]; overlay.style.display = 'flex'; }
+        function changeSlide(dir) {
+            currentSlide = (currentSlide + dir + galleryImages.length) % galleryImages.length;
             document.getElementById('zoomed-img').src = galleryImages[currentSlide];
         }
-
-        function closeZoom(event) { if (event.target.id === 'zoom-overlay') document.getElementById('zoom-overlay').style.display = 'none'; }
-
-        function capture(el, name, src) {
-            aura += 100; localStorage.setItem('john_aura', aura); updateUI();
-            const modal = document.getElementById('achievement-modal');
-            document.getElementById('modal-img').src = src;
-            const displayName = myUsername ? myUsername.toUpperCase() : "GUEST";
-            document.getElementById('modal-aura-text').innerText = "+100 AURA FOR " + displayName;
-            modal.style.display = 'block'; setTimeout(() => { modal.style.display = 'none'; }, 1800);
-            el.remove();
-        }
-
-        function triggerGlitch() {
-            document.body.classList.add('master-glitch');
-            setTimeout(() => { document.body.classList.remove('master-glitch'); }, 800);
-        }
+        function triggerGlitch() { document.body.classList.add('master-glitch'); setTimeout(() => document.body.classList.remove('master-glitch'), 800); }
     </script>
 </body>
 </html>
