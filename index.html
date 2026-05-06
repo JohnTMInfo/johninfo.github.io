@@ -15,7 +15,8 @@
             --roblox-red: #f23f42;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; } /* Custom cursor active */
+        /* CUSTOM CURSOR & BASE */
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -26,7 +27,7 @@
             perspective: 1000px;
         }
 
-        /* DIGITAL GRAIN OVERLAY */
+        /* DIGITAL GRAIN & SCANLINES */
         body::before {
             content: ""; position: fixed; inset: 0; 
             background-image: url("https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Grain.png");
@@ -44,18 +45,6 @@
             0%, 100% { background-color: #050505; --accent: #22d3ee; }
             33% { background-color: #1a0b2e; --accent: #9d1dfd; }
             66% { background-color: #0b1a2e; --accent: #3b82f6; }
-        }
-
-        @keyframes floatPop {
-            0% { transform: translateY(110vh) scale(0.6) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.8; transform: translateY(100vh) scale(1); }
-            100% { transform: translateY(-150vh) scale(1.5) rotate(720deg); opacity: 0; }
-        }
-
-        @keyframes scorePulse {
-            0% { transform: scale(1); text-shadow: 0 0 0px var(--accent); }
-            50% { transform: scale(1.1); text-shadow: 0 0 20px var(--accent); }
-            100% { transform: scale(1); text-shadow: 0 0 0px var(--accent); }
         }
 
         /* CURSOR TRAIL */
@@ -80,26 +69,25 @@
             100% { transform: translate(-50%, -100px); opacity: 0; }
         }
 
+        /* CAPTURE MODAL */
         #achievement-modal {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 260px;
-            background: rgba(10, 10, 10, 0.95); border: 1px solid var(--accent); border-radius: 24px;
+            background: rgba(10, 10, 10, 0.95); border: 2px solid var(--accent); border-radius: 24px;
             padding: 25px; text-align: center; z-index: 8000; display: none;
             box-shadow: 0 0 40px rgba(34, 211, 238, 0.3);
         }
-
-        /* 3D TILT EFFECT */
-        .tilt-card { transition: transform 0.1s ease-out; transform-style: preserve-3d; }
+        #achievement-modal img { width: 70px; height: 70px; margin-bottom: 12px; border-radius: 12px; }
 
         .container { width: 100%; max-width: 400px; position: relative; z-index: 10; text-align: center; }
-        .avatar { width: 100px; height: 100px; border-radius: var(--card-radius); border: 2px solid var(--accent); margin-bottom: 15px; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .avatar { width: 100px; height: 100px; border-radius: var(--card-radius); border: 2px solid var(--accent); margin-bottom: 15px; transition: 0.4s; }
         .avatar:hover { transform: scale(1.1) rotate(3deg); }
 
-        .location-tag { font-size: 14px; color: var(--text-secondary); margin-bottom: 10px; }
         .category-label { font-size: 10px; font-weight: 900; color: var(--accent); letter-spacing: 4px; text-transform: uppercase; margin: 40px 0 15px 0; display: block; opacity: 0.6; }
 
-        .social-chips { display: flex; gap: 12px; justify-content: center; margin-bottom: 40px; }
+        .social-chips { display: flex; gap: 12px; justify-content: center; margin-bottom: 20px; }
         .chip { display: flex; align-items: center; gap: 8px; padding: 10px 20px; background: var(--card-base); border: 1px solid var(--border-subtle); border-radius: 100px; color: white; text-decoration: none; font-weight: 700; font-size: 13px; transition: 0.3s; }
         .chip:hover { border-color: var(--accent); box-shadow: 0 0 15px var(--accent); transform: translateY(-2px); }
+        .chip svg { width: 16px; height: 16px; fill: white; }
 
         .gallery { display: flex; gap: 12px; overflow-x: auto; margin-bottom: 30px; padding: 10px 0; scrollbar-width: none; }
         .gallery img { min-width: 280px; height: 280px; object-fit: cover; border-radius: var(--card-radius); border: 1px solid var(--border-subtle); }
@@ -109,22 +97,32 @@
 
         /* ROBLOX UI */
         .roblox-bot-card { background: #2b2d31; border-left: 4px solid var(--roblox-red); border-radius: 8px; padding: 15px; text-align: left; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-        .rb-header { font-weight: 700; color: #fff; margin-bottom: 12px; font-size: 15px; }
-        .rb-title { font-weight: 700; color: #fff; font-size: 13px; margin-bottom: 4px; }
+        .rb-header { font-weight: 700; color: #fff; margin-bottom: 12px; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+        .rb-title { font-weight: 700; color: #fff; font-size: 13px; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
         .rb-content { color: #dbdee1; font-size: 13px; margin-left: 24px; line-height: 1.4; }
 
+        /* LEADERBOARD */
         .leaderboard-card { background: var(--card-base); border: 1px solid var(--border-subtle); border-radius: var(--card-radius); padding: 20px; text-align: left; }
-        .lb-me { background: rgba(34, 211, 238, 0.15); border-radius: 100px; padding: 12px; margin: 0 -10px; border: 1px solid rgba(34, 211, 238, 0.4); display: flex; width: calc(100% + 20px); }
+        .lb-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border-subtle); font-size: 13px; font-weight: 600; opacity: 0.8; }
+        .lb-rank { color: var(--accent); font-weight: 900; width: 30px; }
+        .lb-score { color: var(--accent); font-weight: 900; }
+        .lb-me { background: rgba(34, 211, 238, 0.15); border-radius: 10px; padding: 12px; margin: 5px -10px 0 -10px; border: 1px solid rgba(34, 211, 238, 0.4); display: flex; justify-content: space-between; align-items: center; }
 
         .sync-card { background: var(--card-base); border: 1px solid var(--border-subtle); border-radius: 15px; padding: 15px; margin-top: 15px; margin-bottom: 40px; display: flex; gap: 10px; width: 100%; min-height: 60px; align-items: center; justify-content: center; }
         .sync-card input { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border-subtle); background: rgba(0,0,0,0.5); color: #fff; outline: none; }
         .sync-card button { background: var(--accent); color: #000; font-weight: 900; padding: 10px 15px; border-radius: 8px; border: none; }
-        
         .sync-locked { color: var(--accent); font-weight: 900; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; }
 
-        .float-icon { position: absolute; width: 50px; height: 50px; animation: floatPop 7s linear infinite; z-index: 1500; }
+        /* ZOOM & FLOATS */
         #zoom-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9500; display: none; align-items: center; justify-content: center; touch-action: none; }
         #zoomed-img { max-width: 85%; max-height: 80%; border-radius: 20px; border: 2px solid var(--accent); }
+        .float-icon { position: absolute; width: 50px; height: 50px; z-index: 1500; animation: floatPop 7s linear infinite; }
+        
+        @keyframes scorePulse {
+            0% { transform: scale(1); text-shadow: 0 0 0px var(--accent); }
+            50% { transform: scale(1.1); text-shadow: 0 0 20px var(--accent); }
+            100% { transform: scale(1); text-shadow: 0 0 0px var(--accent); }
+        }
     </style>
 </head>
 <body id="main-body" class="scanlines">
@@ -144,28 +142,28 @@
     <div class="container">
         <img src="Untitled design.png" class="avatar" id="main-avatar">
         <h1 style="font-weight: 900; letter-spacing: -2px;">John™</h1>
-        <div class="location-tag">London Uk 🇬🇧</div>
         <div id="aura-score" style="margin-bottom: 15px; font-size: 11px; font-weight: 800; color: var(--accent);">AURA: 0</div>
 
+        <span class="category-label">CONNECT & STATS</span>
         <div class="social-chips">
             <a href="https://www.tiktok.com/@neoztar" class="chip" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.03 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.9-.32-1.98-.23-2.81.33-.85.51-1.28 1.43-1.35 2.4-.04.41.01.82.17 1.2.3.74.82 1.34 1.54 1.63.76.34 1.53.3 2.3.03.8-.25 1.45-.79 1.84-1.53.24-.48.35-.98.35-1.51V.02z"/></svg>TikTok</a>
             <a href="https://www.roblox.com/users/8593516066/profile" class="chip" target="_blank"><img src="1000035284-fotor-bg-remover-20260504165235.png" width="18"> Roblox</a>
         </div>
 
-        <span class="category-label">MY PHOTOS</span>
+        <span class="category-label">PHOTOS & FEED</span>
         <div class="gallery" id="photo-gallery">
             <img src="LRM_20260424_121848.jpg" onclick="openGallery(this)"><img src="LRM_20260424_121524.jpg" onclick="openGallery(this)"><img src="LRM_20260424_121122.jpg" onclick="openGallery(this)"><img src="LRM_20260424_122043.jpg" onclick="openGallery(this)">
         </div>
 
         <span class="category-label">MY FAVORITE SONG</span>
-        <div class="audio-player tilt-card">
+        <div class="audio-player">
             <button class="play-btn" id="playToggle"><svg id="playIcon" width="20" height="20" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg><svg id="pauseIcon" style="display:none" width="20" height="20" viewBox="0 0 24 24" fill="black"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></button>
             <div class="song-info"><div class="song-title">song</div><div class="song-artist">cool boi</div></div>
             <audio id="myAudio" loop><source src="snaptik_7566297191250152717_v3.mp4" type="audio/mp4"></audio>
         </div>
 
         <span class="category-label">MY ROBLOX DETAILS</span>
-        <div class="roblox-bot-card tilt-card">
+        <div class="roblox-bot-card">
             <div class="rb-header"><span>👽</span> Profile: John</div>
             <div class="rb-section"><div class="rb-title"><span>🤓</span> Identity</div><div class="rb-content">Handle: @pokkiexx3<br>ID: 8593516066</div></div>
             <div class="rb-section"><div class="rb-title"><span>🐬</span> Socials</div><div class="rb-content">Friends: 96 | Followers: 32</div></div>
@@ -175,8 +173,13 @@
         <span class="category-label">MY TIKTOK POSTS</span>
         <div class="tiktok-feed-box"><blockquote class="tiktok-embed" cite="https://www.tiktok.com/@neoztar" data-unique-id="neoztar" data-embed-type="creator"><section><a target="_blank" href="https://www.tiktok.com/@neoztar">@neoztar</a></section></blockquote></div>
 
-        <span class="category-label">AURA STARS</span>
-        <div class="leaderboard-card"><div class="lb-me"><span style="width:30px">#1</span><span id="lb-my-name" style="flex:1">Guest</span><span id="lb-my-score" style="color:var(--accent)">0</span></div></div>
+        <span class="category-label">GLOBAL AURA NETWORK</span>
+        <div class="leaderboard-card" id="leaderboard-body">
+            <div class="lb-me">
+                <div style="display:flex; gap:10px;"><span class="lb-rank">#?</span><span id="lb-my-name">Guest</span></div>
+                <span id="lb-my-score" class="lb-score">0</span>
+            </div>
+        </div>
 
         <div class="sync-card" id="sync-card">
             <input type="text" id="username-input" placeholder="Set Identity..." maxlength="15">
@@ -193,50 +196,65 @@
         const iconImages = ['1995-confusedpengu.png', '1785-pepeloading.png', '937928-alien-yap.gif', '734879-fishspinning.gif'];
         let galleryImages = []; let currentSlide = 0;
 
+        // FETCH REAL GLOBAL PEOPLE
+        async function fetchRealPeople() {
+            try {
+                const response = await fetch('https://randomuser.me/api/?results=5&nat=gb,us,ca');
+                const data = await response.json();
+                const leaderboard = document.getElementById('leaderboard-body');
+                data.results.forEach((user, index) => {
+                    const row = document.createElement('div'); row.className = 'lb-row';
+                    const randomScore = Math.floor(Math.random() * 50000) + 10000;
+                    row.innerHTML = `<div style="display:flex; gap:10px;"><span class="lb-rank">#${index + 1}</span><span>${user.login.username}</span></div><span class="lb-score">${randomScore.toLocaleString()}</span>`;
+                    leaderboard.prepend(row);
+                });
+            } catch(e) { console.log("Network Offline"); }
+        }
+
+        // CHAOS ENGINE
+        const chaosEvents = [
+            () => { const el = document.createElement('div'); el.className = 'corner-alert'; el.style.top = Math.random() * 90 + '%'; el.style.left = Math.random() * 80 + '%'; const msgs = ['Void_Sync_0%', 'Signal_Stable', 'User_Identified', 'Data_Leaked...', 'Aura_Critical']; el.innerText = msgs[Math.floor(Math.random()*msgs.length)]; el.style.animation = 'ghostFade 3s forwards'; document.body.appendChild(el); setTimeout(() => el.remove(), 3000); },
+            () => { const f = document.createElement('div'); f.className = 'glitch-fragment'; f.style.top = Math.random() * 100 + '%'; f.style.left = '-50px'; document.body.appendChild(f); f.animate([{ left: '-50px' }, { left: '110vw' }], { duration: 4000, easing: 'linear' }); setTimeout(() => f.remove(), 4000); },
+            () => { document.body.style.opacity = '0.8'; setTimeout(() => document.body.style.opacity = '1', 100); }
+        ];
+
         // MOUSE TRAIL
         const cursor = document.getElementById('cursor');
         document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            // Ghost trail
-            const trail = document.createElement('div');
-            trail.className = 'cursor-dot';
-            trail.style.left = e.clientX + 'px'; trail.style.top = e.clientY + 'px';
+            cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px';
+            const trail = document.createElement('div'); trail.className = 'cursor-dot'; trail.style.left = e.clientX + 'px'; trail.style.top = e.clientY + 'px';
             trail.style.opacity = '0.3'; trail.style.transform = 'scale(0.5)';
-            document.body.appendChild(trail);
-            setTimeout(() => trail.remove(), 400);
+            document.body.appendChild(trail); setTimeout(() => trail.remove(), 400);
         });
 
-        // 3D TILT
-        document.querySelectorAll('.tilt-card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left; const y = e.clientY - rect.top;
-                const xc = rect.width / 2; const yc = rect.height / 2;
-                const dx = x - xc; const dy = y - yc;
-                card.style.transform = `rotateY(${dx / 15}deg) rotateX(${-dy / 15}deg)`;
-            });
-            card.addEventListener('mouseleave', () => card.style.transform = 'rotateY(0deg) rotateX(0deg)');
-        });
+        // SWIPE & ZOOM
+        let touchStartX = 0; let touchEndX = 0;
+        const overlay = document.getElementById('zoom-overlay');
+        overlay.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX);
+        overlay.addEventListener('touchend', e => { touchEndX = e.changedTouches[0].screenX; if(touchEndX < touchStartX-50) changeSlide(1); if(touchEndX > touchStartX+50) changeSlide(-1); });
+        overlay.onclick = e => { if(e.target.id === 'zoom-overlay') overlay.style.display = 'none'; };
 
         const audio = document.getElementById('myAudio');
         document.getElementById('playToggle').onclick = () => {
+            const playIcon = document.getElementById('playIcon'); const pauseIcon = document.getElementById('pauseIcon');
             if (audio.paused) { audio.play(); playIcon.style.display = 'none'; pauseIcon.style.display = 'block'; }
             else { audio.pause(); playIcon.style.display = 'block'; pauseIcon.style.display = 'none'; }
         };
 
         window.onload = function() {
-            updateUI();
-            for(let i=0; i<3; i++) { setTimeout(spawnIcon, i * 300); }
+            updateUI(); fetchRealPeople();
+            for(let i=0; i<4; i++) { setTimeout(spawnIcon, i * 200); }
             const mNotif = document.getElementById('notif-music');
             mNotif.classList.add('notif-active');
             setTimeout(() => { mNotif.classList.remove('notif-active'); triggerDiscordNotif(); }, 6000);
             setInterval(triggerDiscordNotif, 30000);
             setInterval(spawnIcon, 2500);
+            setInterval(() => { chaosEvents[Math.floor(Math.random()*chaosEvents.length)](); }, 4500);
             document.querySelectorAll('#photo-gallery img').forEach(img => galleryImages.push(img.src));
         };
 
         function triggerDiscordNotif() { const dNotif = document.getElementById('notif-discord'); dNotif.classList.add('notif-active'); setTimeout(() => dNotif.classList.remove('notif-active'), 5000); }
+        function triggerGalleryNotif() { const gNotif = document.getElementById('notif-gallery'); gNotif.classList.add('notif-active'); setTimeout(() => gNotif.classList.remove('notif-active'), 5000); }
 
         function saveIdentity() {
             const val = document.getElementById('username-input').value.trim();
@@ -257,8 +275,7 @@
             icon.style.left = Math.random() * 90 + '%';
             icon.innerHTML = `<img src="${imgFile}" width="100%">`;
             icon.onclick = function() { captureIcon(imgFile); icon.remove(); };
-            document.body.appendChild(icon);
-            setTimeout(() => icon.remove(), 8000);
+            document.body.appendChild(icon); setTimeout(() => icon.remove(), 8000);
         }
 
         function captureIcon(src) {
@@ -271,8 +288,8 @@
             modal.style.display = 'block'; setTimeout(() => { modal.style.display = 'none'; }, 1800);
         }
 
-        function openGallery(el) { currentSlide = galleryImages.indexOf(el.src); document.getElementById('zoomed-img').src = galleryImages[currentSlide]; document.getElementById('zoom-overlay').style.display = 'flex'; }
-        document.getElementById('zoom-overlay').onclick = e => { if (e.target.id === 'zoom-overlay') document.getElementById('zoom-overlay').style.display = 'none'; };
+        function openGallery(el) { currentSlide = galleryImages.indexOf(el.src); document.getElementById('zoomed-img').src = galleryImages[currentSlide]; overlay.style.display = 'flex'; triggerGalleryNotif(); }
+        function changeSlide(dir) { currentSlide = (currentSlide + dir + galleryImages.length) % galleryImages.length; document.getElementById('zoomed-img').src = galleryImages[currentSlide]; }
     </script>
 </body>
 </html>
